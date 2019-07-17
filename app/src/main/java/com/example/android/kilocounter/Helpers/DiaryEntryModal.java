@@ -4,7 +4,28 @@ import org.json.JSONObject;
 
 import java.util.Date;
 
-class DiaryEntryModal {
-    Date date;
-    JSONObject jsonObject;
+public class DiaryEntryModal {
+    String date;
+    int netCal;
+
+    public DiaryEntryModal(int netCal, String date) {
+        this.date = date;
+        this.netCal = netCal;
+    }
+
+    public String getDate() {
+        return date;
+    }
+
+    public void setDate(String date) {
+        this.date = date;
+    }
+
+    public int getNetCal() {
+        return netCal;
+    }
+
+    public void setNetCal(int netCal) {
+        this.netCal = netCal;
+    }
 }
