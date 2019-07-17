@@ -1,11 +1,31 @@
 package com.example.android.kilocounter.Helpers;
 
+import android.content.Context;
+import android.graphics.Movie;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
+import android.widget.ListView;
+import android.widget.TextView;
 
-class DiaryListAdaptor extends BaseAdapter {
+import com.example.android.kilocounter.MainActivity;
+import com.example.android.kilocounter.R;
+
+import java.util.List;
+
+public class DiaryListAdaptor extends BaseAdapter {
+
+    private Context context;
+    private List<DiaryEntryModal> movieList;
+
+    public DiaryListAdaptor(Context context, List<DiaryEntryModal> movies) {
+        this.context = context;
+        movieList = movies;
+
+
+    }
 
     /**
      * Get a View that displays the data at the specified position in the data set. You can either
@@ -27,7 +47,15 @@ class DiaryListAdaptor extends BaseAdapter {
      */
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        return null;
+        if (convertView == null) {
+            View view = LayoutInflater.from(parent.getContext())
+                    .inflate(R.layout.diary_item, parent, false);
+            convertView = view;
+        }
+
+        ((TextView) convertView.findViewById(android.R.id.text1))
+                .setText(getItem(position));
+        return convertView;
     }
 
     /**

@@ -8,6 +8,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ArrayAdapter;
+import android.widget.ListView;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -27,6 +29,15 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+
+    ArrayAdapter adapter = new ArrayAdapter<String>(this,
+            R.layout.activity_listview, mobileArray);
+
+    ListView listView = (ListView) findViewById(R.id.mobile_list);
+        listView.setAdapter(adapter);
+
+
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
