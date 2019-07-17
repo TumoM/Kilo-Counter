@@ -16,6 +16,7 @@ import com.example.android.kilocounter.Helpers.DiaryEntryModal;
 import com.example.android.kilocounter.Helpers.DiaryListAdapter;
 
 import java.util.ArrayList;
+import java.util.Collections;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -43,13 +44,14 @@ public class MainActivity extends AppCompatActivity {
         ArrayList<DiaryEntryModal> diaryEntires = new ArrayList<>();
         diaryEntires.add(diaryEntryModal1);
         diaryEntires.add(diaryEntryModal2);
-        diaryEntires.add(diaryEntryModal3);
-        diaryEntires.add(diaryEntryModal4);
         diaryEntires.add(diaryEntryModal5);
         diaryEntires.add(diaryEntryModal6);
         diaryEntires.add(diaryEntryModal7);
+        diaryEntires.add(diaryEntryModal3);
+        diaryEntires.add(diaryEntryModal4);
 
 
+        Collections.sort(diaryEntires);
         DiaryListAdapter adapter = new DiaryListAdapter(this,R.layout.diary_item,diaryEntires);
         listView.setAdapter(adapter);
 
