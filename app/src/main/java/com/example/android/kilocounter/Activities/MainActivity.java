@@ -1,4 +1,4 @@
-package com.example.android.kilocounter;
+package com.example.android.kilocounter.Activities;
 
 import android.content.Context;
 import android.content.Intent;
@@ -12,8 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ListView;
 
-import com.example.android.kilocounter.Helpers.DiaryEntryModal;
+import com.example.android.kilocounter.Models.DiaryEntryModel;
 import com.example.android.kilocounter.Helpers.DiaryListAdapter;
+import com.example.android.kilocounter.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,22 +34,22 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.DiaryListView);
 
-        DiaryEntryModal diaryEntryModal1 = new DiaryEntryModal(100, "2019/05/20");
-        DiaryEntryModal diaryEntryModal2 = new DiaryEntryModal(-200, "2019/05/21");
-        DiaryEntryModal diaryEntryModal3 = new DiaryEntryModal(500, "2019/05/22");
-        DiaryEntryModal diaryEntryModal4 = new DiaryEntryModal(0, "2019/05/23");
-        DiaryEntryModal diaryEntryModal5 = new DiaryEntryModal(-200, "2019/05/24");
-        DiaryEntryModal diaryEntryModal6 = new DiaryEntryModal(500, "2019/05/25");
-        DiaryEntryModal diaryEntryModal7 = new DiaryEntryModal(0, "2019/05/26");
+        DiaryEntryModel diaryEntryModel1 = new DiaryEntryModel(100, "2019/05/20");
+        DiaryEntryModel diaryEntryModel2 = new DiaryEntryModel(-200, "2019/05/21");
+        DiaryEntryModel diaryEntryModel3 = new DiaryEntryModel(500, "2019/05/22");
+        DiaryEntryModel diaryEntryModel4 = new DiaryEntryModel(0, "2019/05/23");
+        DiaryEntryModel diaryEntryModel5 = new DiaryEntryModel(-200, "2019/05/24");
+        DiaryEntryModel diaryEntryModel6 = new DiaryEntryModel(500, "2019/05/25");
+        DiaryEntryModel diaryEntryModel7 = new DiaryEntryModel(0, "2019/05/26");
 
-        ArrayList<DiaryEntryModal> diaryEntires = new ArrayList<>();
-        diaryEntires.add(diaryEntryModal1);
-        diaryEntires.add(diaryEntryModal2);
-        diaryEntires.add(diaryEntryModal5);
-        diaryEntires.add(diaryEntryModal6);
-        diaryEntires.add(diaryEntryModal7);
-        diaryEntires.add(diaryEntryModal3);
-        diaryEntires.add(diaryEntryModal4);
+        ArrayList<DiaryEntryModel> diaryEntires = new ArrayList<>();
+        diaryEntires.add(diaryEntryModel1);
+        diaryEntires.add(diaryEntryModel2);
+        diaryEntires.add(diaryEntryModel5);
+        diaryEntires.add(diaryEntryModel6);
+        diaryEntires.add(diaryEntryModel7);
+        diaryEntires.add(diaryEntryModel3);
+        diaryEntires.add(diaryEntryModel4);
 
 
         Collections.sort(diaryEntires);

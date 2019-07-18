@@ -1,22 +1,18 @@
-package com.example.android.kilocounter.Helpers;
+package com.example.android.kilocounter.Models;
 
 import android.support.annotation.NonNull;
 
-import org.json.JSONObject;
-
-import java.util.Date;
-
-public class DiaryEntryModal implements Comparable<DiaryEntryModal> {
+public class DiaryEntryModel implements Comparable<DiaryEntryModel> {
     String date;
     int netCal;
 
-    public DiaryEntryModal(int netCal, String date) {
+    public DiaryEntryModel(int netCal, String date) {
         this.date = date;
         this.netCal = netCal;
     }
 
     @Override
-    public int compareTo(@NonNull DiaryEntryModal entry) {
+    public int compareTo(@NonNull DiaryEntryModel entry) {
         if (getDate() == null || entry.getDate() == null) {
             return 0;
         }

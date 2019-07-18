@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".CalcActivity">
+    tools:context=".Activities.CalcActivity">
 
     <LinearLayout
         android:id="@+id/FoodLinerLaylout"
@@ -189,7 +189,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="51dp"
         android:layout_marginTop="44dp"
-        android:text="-"
+        android:hint="-"
         android:textAlignment="textStart"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/FoodTotalTextView"
@@ -199,7 +199,7 @@
         android:id="@+id/NetTotalValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:hint="0"
         android:textAlignment="textStart"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/NetTotalTextView"
@@ -209,7 +209,7 @@
         android:id="@+id/ExerciseTotalValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="-"
+        android:hint="-"
         android:textAlignment="textStart"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/ExcersiseTotalTextView"
