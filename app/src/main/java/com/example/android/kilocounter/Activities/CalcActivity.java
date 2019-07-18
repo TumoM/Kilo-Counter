@@ -59,11 +59,11 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         /*
         Text watchers
          */
-        breakfastET.addTextChangedListener(textWatcherConstructor(foodTotalTV));
+        breakfastET.addTextChangedListener(textWatcherConstructor(foodTotalTV, lunchET, dinnerET));
 
-        lunchET.addTextChangedListener(textWatcherConstructor(foodTotalTV));
+        lunchET.addTextChangedListener(textWatcherConstructor(foodTotalTV, breakfastET, dinnerET));
 
-        dinnerET.addTextChangedListener(textWatcherConstructor(foodTotalTV));
+        dinnerET.addTextChangedListener(textWatcherConstructor(foodTotalTV, breakfastET, lunchET));
 
         runningET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
 
@@ -74,6 +74,70 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         foodTotalTV.addTextChangedListener(textWatcherConstructor(netTotalTV));
     }
 
+    private TextWatcher textWatcherConstructor(final TextView targetName, final EditText otherCat1, final EditText otherCat2){
+        return new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Toast.makeText(CalcActivity.this, "Old char seq: " + s.toString(), Toast.LENGTH_SHORT).show();
+                /*if (s.length() == 0){
+                    targetName.setText("0");
+                }
+                if (!(targetName.getText().toString().equals(s.toString())) && (targetName.getText().toString().length() > 0)) {
+                    targetName.setText(
+                            Integer.parseInt(targetName.getText().toString())
+                    );
+                }*/
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Boolean cat1 = otherCat1.getText().toString().length() > 0 && otherCat1.getText().toString().length() < 10;
+                Boolean cat2 = otherCat2.getText().toString().length() > 0 && otherCat2.getText().toString().length() < 10;
+                Boolean thisVal = editable.toString().length() > 0;
+                Boolean validTarget = (targetName.getText().toString().length() > 0);
+                int runningTotal = 0;
+                if (validTarget){
+                runningTotal = Integer.parseInt(targetName.getText().toString());
+                }
+
+                if (thisVal) {
+
+                    runningTotal = Integer.parseInt(editable.toString());
+                }
+                    if (cat1){
+                        Log.e("afterTextChangedBOY", "Value: \""+otherCat1.toString()+"\"");
+                        runningTotal += Integer.parseInt(otherCat1.getText().toString());
+                    }
+                    if (cat2){
+                        runningTotal += Integer.parseInt(otherCat2.getText().toString());
+
+                    }
+
+                targetName.setText(String.valueOf(runningTotal));
+
+
+                //Toast.makeText(CalcActivity.this, "New char seq: " + editable.toString(), Toast.LENGTH_SHORT).show();
+                String runningTotalStr = targetName.getText().toString();
+                int runningTotalInt;
+                //Toast.makeText(CalcActivity.this, "runningTotalStr1: " + runningTotalStr, Toast.LENGTH_SHORT).show();
+                Log.e("runningTotalStr!!!: ", runningTotalStr);
+                if (!(runningTotalStr.equals(""))) {
+                    runningTotalInt = Integer.parseInt(runningTotalStr);
+                }
+                else{
+                    targetName.setText("0");
+                }
+                //Toast.makeText(CalcActivity.this, runningTotalStr, Toast.LENGTH_LONG).show();
+                //targetName.setText(editable.toString());
+            }
+        };
+    }
+
+
     private TextWatcher textWatcherConstructor(final TextView targetName){
         return new TextWatcher() {
             @Override
@@ -83,9 +147,14 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
                 //Toast.makeText(CalcActivity.this, "Old char seq: " + s.toString(), Toast.LENGTH_SHORT).show();
-                if (s.length() == 0){
+                /*if (s.length() == 0){
                     targetName.setText("0");
                 }
+                if (!(targetName.getText().toString().equals(s.toString())) && (targetName.getText().toString().length() > 0)) {
+                    targetName.setText(
+                            Integer.parseInt(targetName.getText().toString())
+                    );
+                }*/
             }
 
             @Override
@@ -93,10 +162,13 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 //Toast.makeText(CalcActivity.this, "New char seq: " + editable.toString(), Toast.LENGTH_SHORT).show();
                 String runningTotalStr = targetName.getText().toString();
                 int runningTotalInt;
-                Toast.makeText(CalcActivity.this, "runningTotalStr: " + runningTotalStr, Toast.LENGTH_SHORT).show();
+                Toast.makeText(CalcActivity.this, "runningTotalStr1: " + runningTotalStr, Toast.LENGTH_SHORT).show();
                 Log.e("runningTotalStr!!!: ", runningTotalStr);
                 if (!(runningTotalStr.equals(""))) {
-                    //runningTotalInt = Integer.parseInt(runningTotalStr);
+                    runningTotalInt = Integer.parseInt(runningTotalStr);
+                }
+                else{
+                    targetName.setText("0");
                 }
                 Toast.makeText(CalcActivity.this, runningTotalStr, Toast.LENGTH_LONG).show();
                 targetName.setText(editable.toString());
