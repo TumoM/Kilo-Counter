@@ -108,6 +108,11 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
                     runningTotal = Integer.parseInt(editable.toString());
                 }
+                else{
+                    runningTotal = 0;
+                    targetName.setText(String.valueOf(runningTotal));
+
+                }
                     if (cat1){
                         Log.e("afterTextChangedBOY", "Value: \""+otherCat1.toString()+"\"");
                         runningTotal += Integer.parseInt(otherCat1.getText().toString());
