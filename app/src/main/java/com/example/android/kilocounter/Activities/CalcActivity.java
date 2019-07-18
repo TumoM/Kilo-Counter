@@ -65,14 +65,65 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
         dinnerET.addTextChangedListener(textWatcherConstructor(foodTotalTV, breakfastET, lunchET));
 
-        runningET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
+        runningET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV, gymET, otherET));
 
-        gymET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
+        gymET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV, runningET, otherET));
 
-        otherET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
+        otherET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV, runningET, gymET));
 
-        foodTotalTV.addTextChangedListener(textWatcherConstructor(netTotalTV));
+        foodTotalTV.addTextChangedListener(textWatcherConstructorNet(netTotalTV, foodTotalTV, exerciseTotalTV));
+
+        exerciseTotalTV.addTextChangedListener(textWatcherConstructorNet(netTotalTV, foodTotalTV, exerciseTotalTV));
     }
+
+    private TextWatcher textWatcherConstructorNet(final TextView targetName, final TextView otherCat1, final TextView otherCat2) {
+        return new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                Boolean cat1 = otherCat1.getText().toString().length() > 0 && otherCat1.getText().toString().length() < 10;
+                Boolean cat2 = otherCat2.getText().toString().length() > 0 && otherCat2.getText().toString().length() < 10;
+                Boolean thisVal = editable.toString().length() > 0;
+
+                targetName.setText("0");
+
+                Boolean validTarget = (targetName.getText().toString().length() > 0);
+                int runningTotal = 0;
+                if (validTarget) {
+                    runningTotal = Integer.parseInt(targetName.getText().toString());
+                }
+/*
+                if (thisVal) {
+
+                    runningTotal = Integer.parseInt(editable.toString());
+                } else {
+                    runningTotal = 0;
+                    targetName.setText(String.valueOf(runningTotal));
+
+                }*/
+                if (cat1) {
+                    Log.e("afterTextChangedBOY", "Value: \"" + otherCat1.toString() + "\"");
+                    runningTotal += Integer.parseInt(otherCat1.getText().toString());
+                }
+                if (cat2) {
+                    runningTotal -= Integer.parseInt(otherCat2.getText().toString());
+
+                }
+
+                targetName.setText(String.valueOf(runningTotal));
+            }
+        };
+    }
+
 
     private TextWatcher textWatcherConstructor(final TextView targetName, final EditText otherCat1, final EditText otherCat2){
         return new TextWatcher() {
@@ -123,21 +174,6 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                     }
 
                 targetName.setText(String.valueOf(runningTotal));
-
-
-                //Toast.makeText(CalcActivity.this, "New char seq: " + editable.toString(), Toast.LENGTH_SHORT).show();
-                String runningTotalStr = targetName.getText().toString();
-                int runningTotalInt;
-                //Toast.makeText(CalcActivity.this, "runningTotalStr1: " + runningTotalStr, Toast.LENGTH_SHORT).show();
-                Log.e("runningTotalStr!!!: ", runningTotalStr);
-                if (!(runningTotalStr.equals(""))) {
-                    runningTotalInt = Integer.parseInt(runningTotalStr);
-                }
-                else{
-                    targetName.setText("0");
-                }
-                //Toast.makeText(CalcActivity.this, runningTotalStr, Toast.LENGTH_LONG).show();
-                //targetName.setText(editable.toString());
             }
         };
     }
