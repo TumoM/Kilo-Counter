@@ -59,82 +59,50 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         /*
         Text watchers
          */
-        breakfastET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        breakfastET.addTextChangedListener(textWatcherConstructor(foodTotalTV));
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                String foodTotalStr = (String) foodTotalTV.getText();
-                Toast.makeText(CalcActivity.this, foodTotalStr, Toast.LENGTH_LONG).show();
-                foodTotalTV.setText(editable.toString());
-            }
-        });
+        lunchET.addTextChangedListener(textWatcherConstructor(foodTotalTV));
 
-        lunchET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        dinnerET.addTextChangedListener(textWatcherConstructor(foodTotalTV));
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                foodTotalTV.setText(editable.toString().toUpperCase());
-            }
-        });
+        runningET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
 
-        dinnerET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        gymET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
 
-            @Override
-            public void afterTextChanged(Editable editable) {
-                foodTotalTV.setText(editable.toString().toUpperCase());
-            }
-        });
+        otherET.addTextChangedListener(textWatcherConstructor(exerciseTotalTV));
 
-        runningET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                foodTotalTV.setText(editable.toString().toUpperCase());
-            }
-        });
-
-        gymET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                foodTotalTV.setText(editable.toString().toUpperCase());
-            }
-        });
-
-        otherET.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {}
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-
-            @Override
-            public void afterTextChanged(Editable editable) {
-                foodTotalTV.setText(editable.toString().toUpperCase());
-            }
-        });
+        foodTotalTV.addTextChangedListener(textWatcherConstructor(netTotalTV));
     }
 
-    // TODO this: private TextWatcher textWatcherConstructor
+    private TextWatcher textWatcherConstructor(final TextView targetName){
+        return new TextWatcher() {
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+            }
+
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                //Toast.makeText(CalcActivity.this, "Old char seq: " + s.toString(), Toast.LENGTH_SHORT).show();
+                if (s.length() == 0){
+                    targetName.setText("0");
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+                //Toast.makeText(CalcActivity.this, "New char seq: " + editable.toString(), Toast.LENGTH_SHORT).show();
+                String runningTotalStr = targetName.getText().toString();
+                int runningTotalInt;
+                Toast.makeText(CalcActivity.this, "runningTotalStr: " + runningTotalStr, Toast.LENGTH_SHORT).show();
+                Log.e("runningTotalStr!!!: ", runningTotalStr);
+                if (!(runningTotalStr.equals(""))) {
+                    //runningTotalInt = Integer.parseInt(runningTotalStr);
+                }
+                Toast.makeText(CalcActivity.this, runningTotalStr, Toast.LENGTH_LONG).show();
+                targetName.setText(editable.toString());
+            }
+        };
+    }
 
     /*
     This section of code deals with the datePicker used for User input

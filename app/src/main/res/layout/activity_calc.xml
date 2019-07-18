@@ -187,13 +187,13 @@
         android:id="@+id/FoodTotalValue"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginStart="51dp"
-        android:layout_marginTop="44dp"
+        android:layout_marginStart="45dp"
         android:hint="-"
+        android:text="0"
         android:textAlignment="textStart"
         android:textSize="24sp"
         app:layout_constraintStart_toEndOf="@+id/FoodTotalTextView"
-        app:layout_constraintTop_toBottomOf="@+id/HR1" />
+        app:layout_constraintTop_toTopOf="@+id/FoodTotalTextView" />
 
     <TextView
         android:id="@+id/NetTotalValue"
@@ -210,6 +210,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:hint="-"
+        android:text="0"
         android:textAlignment="textStart"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/ExcersiseTotalTextView"
