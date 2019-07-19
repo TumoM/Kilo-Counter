@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 // import android.app.DialogFragment;
+import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.icu.util.Calendar;
@@ -119,7 +120,18 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
                 }
 
+                if (runningTotal == 0){
+                    targetName.setTextColor(Color.GRAY);
+                }
+                else if (runningTotal < 0){
+                    targetName.setTextColor(Color.RED);
+
+                }
+                else{
+                    targetName.setTextColor(Color.GREEN);
+                }
                 targetName.setText(String.valueOf(runningTotal));
+
             }
         };
     }
