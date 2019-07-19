@@ -33,6 +33,7 @@ public class DiaryListAdapter extends ArrayAdapter<DiaryEntryModel> {
         this.mResource = resource;
     }
 
+
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
@@ -56,4 +57,12 @@ public class DiaryListAdapter extends ArrayAdapter<DiaryEntryModel> {
 
         return convertView;
     }
+
+    @Nullable
+    @Override
+    public DiaryEntryModel getItem(int position) {
+        return super.getItem(position);
+    }
+
+
 }

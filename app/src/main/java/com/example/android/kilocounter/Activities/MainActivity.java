@@ -10,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.example.android.kilocounter.Models.DiaryEntryModel;
@@ -55,6 +56,23 @@ public class MainActivity extends AppCompatActivity {
         Collections.sort(diaryEntires);
         DiaryListAdapter adapter = new DiaryListAdapter(this,R.layout.diary_item,diaryEntires);
         listView.setAdapter(adapter);
+
+
+        // Sets the ListView onClick() listener after the view is populated.
+        listView.setClickable(true);
+        listView.setOnItemClickListener(new AdapterView.OnItemClickListener(){
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                DiaryEntryModel item = (DiaryEntryModel) parent.getItemAtPosition(position);
+
+                Intent intent = new Intent(mContext,DiaryDeets.class);
+
+                //Todo Pass the information of the clicked entry to the Details screen.
+                intent.putExtra("movie", "N/A");
+                //based on item add info to intent
+                startActivity(intent);
+            }
+        });
 
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.CalcBtn);
