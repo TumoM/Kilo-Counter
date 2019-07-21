@@ -4,11 +4,14 @@ import android.support.annotation.NonNull;
 
 public class DiaryEntryModel implements Comparable<DiaryEntryModel> {
     String date;
-    int netCal;
+    int NKI;
 
-    public DiaryEntryModel(int netCal, String date) {
+    public DiaryEntryModel(int NKI, String date) {
         this.date = date;
-        this.netCal = netCal;
+        this.NKI = NKI;
+    }
+
+    public DiaryEntryModel() {
     }
 
     @Override
@@ -27,11 +30,11 @@ public class DiaryEntryModel implements Comparable<DiaryEntryModel> {
         this.date = date;
     }
 
-    public int getNetCal() {
-        return netCal;
+    public int getNKI() {
+        return NKI;
     }
 
-    public void setNetCal(int netCal) {
-        this.netCal = netCal;
+    public void setNKI(int NKI) {
+        this.NKI = NKI;
     }
 }

@@ -36,15 +36,15 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.DiaryListView);
 
-        DiaryEntryModel diaryEntryModel1 = new DiaryEntryModel(100, "2019/05/20");
-        DiaryEntryModel diaryEntryModel2 = new DiaryEntryModel(-200, "2019/05/21");
-        DiaryEntryModel diaryEntryModel3 = new DiaryEntryModel(500, "2019/05/22");
-        DiaryEntryModel diaryEntryModel4 = new DiaryEntryModel(0, "2019/05/23");
-        DiaryEntryModel diaryEntryModel5 = new DiaryEntryModel(-200, "2019/05/24");
-        DiaryEntryModel diaryEntryModel6 = new DiaryEntryModel(500, "2019/05/25");
-        DiaryEntryModel diaryEntryModel7 = new DiaryEntryModel(0, "2019/05/26");
+        diaryBundle diaryEntryModel1 = new diaryBundle(100, "2019/05/20");
+        diaryBundle diaryEntryModel2 = new diaryBundle(-200, "2019/05/21");
+        diaryBundle diaryEntryModel3 = new diaryBundle(500, "2019/05/22");
+        diaryBundle diaryEntryModel4 = new diaryBundle(0, "2019/05/23");
+        diaryBundle diaryEntryModel5 = new diaryBundle(-200, "2019/05/24");
+        diaryBundle diaryEntryModel6 = new diaryBundle(500, "2019/05/25");
+        diaryBundle diaryEntryModel7 = new diaryBundle(0, "2019/05/26");
 
-        ArrayList<DiaryEntryModel> diaryEntires = new ArrayList<>();
+        final ArrayList<diaryBundle> diaryEntires = new ArrayList<>();
         diaryEntires.add(diaryEntryModel1);
         diaryEntires.add(diaryEntryModel2);
         diaryEntires.add(diaryEntryModel5);
@@ -69,8 +69,9 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,DiaryDeets.class);
 
                 //Todo Pass the information of the clicked entry to the Details screen.
-                intent.putExtra("data", new diaryBundle(item.getDate(),item.getNetCal()));
-                intent.putExtra("movie", "N/A");
+                intent.putExtra("data", new diaryBundle(item.getDate(),item.getNKI()));
+                intent.putExtra("list", diaryEntires);
+                intent.putExtra("index", position);
                 //based on item add info to intent
                 startActivity(intent);
             }

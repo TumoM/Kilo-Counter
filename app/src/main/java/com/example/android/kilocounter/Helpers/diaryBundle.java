@@ -2,16 +2,31 @@ package com.example.android.kilocounter.Helpers;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+
+import com.example.android.kilocounter.Models.DiaryEntryModel;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class diaryBundle implements Parcelable {
+public class diaryBundle extends DiaryEntryModel implements Parcelable {
     private String date;
     private int NKI = 0;
-    private ArrayList<Integer> foodArr;
-    private ArrayList<Integer> exeArr;
+    private ArrayList<Integer> foodArr = new ArrayList<>();
+    private ArrayList<Integer> exeArr = new ArrayList<>();
     private Integer[] arrayInit = new Integer[]{0,0,0};
+
+    @Override
+    public int compareTo(@NonNull DiaryEntryModel entry) {
+        return super.compareTo(entry);
+    }
+
+    public diaryBundle(int NKI, String date) {
+        this.date = date;
+        this.NKI = NKI;
+        this.foodArr.addAll(Arrays.asList(0,0,0));
+        this.exeArr.addAll(Arrays.asList(0,0,0));
+    }
 
     protected diaryBundle(Parcel in) {
         this.NKI = in.readInt();
@@ -21,15 +36,25 @@ public class diaryBundle implements Parcelable {
     }
 
 
+    public void clone(diaryBundle diaryBundle) throws CloneNotSupportedException {
+        this.NKI = diaryBundle.getNKI();
+        this.date = diaryBundle.getDate();
+        this.foodArr = diaryBundle.getFoodArr();
+        this.exeArr = diaryBundle.getExeArr();
+    }
+
+    diaryBundle (diaryBundle diaryBundle) throws CloneNotSupportedException {
+        this.clone(diaryBundle);
+    }
 
     public diaryBundle(String date, int NKI) {
         this.date = date;
         this.NKI = NKI;
         this.foodArr = new ArrayList<Integer>(3);
-        this.foodArr.addAll(Arrays.asList(arrayInit));
+        this.foodArr.addAll(Arrays.asList(0,0,0));
 
         this.exeArr = new ArrayList<Integer>(3);
-        this.exeArr.addAll(Arrays.asList(arrayInit));
+        this.exeArr.addAll(Arrays.asList(0,0,0));
 
     }
 

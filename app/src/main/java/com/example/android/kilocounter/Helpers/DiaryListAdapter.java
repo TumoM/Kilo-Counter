@@ -14,20 +14,19 @@ import com.example.android.kilocounter.R;
 
 import java.util.ArrayList;
 
-public class DiaryListAdapter extends ArrayAdapter<DiaryEntryModel> {
+public class DiaryListAdapter extends ArrayAdapter<diaryBundle> {
 
     private Context mContext;
     private int mResource;
 
     /**
      * Constructor
-     *
-     * @param context  The current context.
+     *  @param context  The current context.
      * @param resource The resource ID for a layout file containing a TextView to use when
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public DiaryListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<DiaryEntryModel> objects) {
+    public DiaryListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<diaryBundle> objects) {
         super(context, resource, objects);
         this.mContext = context;
         this.mResource = resource;
@@ -37,7 +36,7 @@ public class DiaryListAdapter extends ArrayAdapter<DiaryEntryModel> {
     @NonNull
     @Override
     public View getView(int position, @Nullable View convertView, @NonNull ViewGroup parent) {
-        int netCal = getItem(position).getNetCal();
+        int netCal = getItem(position).getNKI();
         String date = getItem(position).getDate();
 
         DiaryEntryModel diaryEntryModel = new DiaryEntryModel(netCal, date);
@@ -60,7 +59,7 @@ public class DiaryListAdapter extends ArrayAdapter<DiaryEntryModel> {
 
     @Nullable
     @Override
-    public DiaryEntryModel getItem(int position) {
+    public diaryBundle getItem(int position) {
         return super.getItem(position);
     }
 

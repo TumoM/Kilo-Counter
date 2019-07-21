@@ -264,8 +264,14 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
     public void newEntryClick(View view){
         // Todo Check if Date + Values present.
-        Snackbar.make(view, "Run check before adding new entry.", Snackbar.LENGTH_LONG)
-                .setAction("Action", null).show();
+        if (datePickerTV.getText().length() < 1){
+            Snackbar.make(view, "Check the dates brew.", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
+        else {
+            Snackbar.make(view, "Adding the new entry", Snackbar.LENGTH_LONG)
+                    .setAction("Action", null).show();
+        }
     }
 
     public static class DatePickerFragment extends DialogFragment{
@@ -293,8 +299,5 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         }
 
 
-        public void onDateSet(DatePicker view, int year, int month, int day) {
-            // Do something with the date chosen by the user
-        }
     }
 }
