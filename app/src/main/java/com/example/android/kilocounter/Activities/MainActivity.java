@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 
+import com.example.android.kilocounter.Helpers.diaryBundle;
 import com.example.android.kilocounter.Models.DiaryEntryModel;
 import com.example.android.kilocounter.Helpers.DiaryListAdapter;
 import com.example.android.kilocounter.R;
@@ -68,6 +69,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,DiaryDeets.class);
 
                 //Todo Pass the information of the clicked entry to the Details screen.
+                intent.putExtra("data", new diaryBundle(item.getDate(),item.getNetCal()));
                 intent.putExtra("movie", "N/A");
                 //based on item add info to intent
                 startActivity(intent);
