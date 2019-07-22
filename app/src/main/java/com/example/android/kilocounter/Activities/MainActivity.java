@@ -41,14 +41,7 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
-        Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
-        Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
-        if (listJSON != null) {
-            ArrayList<DiaryBundle> temp = gson.fromJson(listJSON, feedsType);
-            this.diaryEntires = gson.fromJson(listJSON, feedsType);
-            adapter.notifyDataSetChanged();
-        }
+        new fetchRunnable().run();
     }
 
     @Override
@@ -75,7 +68,7 @@ public class MainActivity extends AppCompatActivity {
         //}
         String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
         Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
-        Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
+        // Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
         if (listJSON != null) {
             ArrayList<DiaryBundle> temp = gson.fromJson(listJSON, feedsType);
             this.diaryEntires = gson.fromJson(listJSON, feedsType);
@@ -133,8 +126,6 @@ public class MainActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
                 Intent intent = new Intent(mContext,CalcActivity.class);
 
                 intent.putExtra("movie", "N/A");
@@ -145,6 +136,20 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
+    public class fetchRunnable implements Runnable {
+        @Override
+        public void run() {
+            String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
+            Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
+            //Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
+            if (listJSON != null) {
+                ArrayList<DiaryBundle> temp = gson.fromJson(listJSON, feedsType);
+                Collections.sort(temp);
+                diaryEntires = temp;
+                adapter.notifyDataSetChanged();
+            }
+        }
+    }
 
 
 

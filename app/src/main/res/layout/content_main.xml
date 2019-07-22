@@ -18,7 +18,7 @@
         android:layout_marginBottom="8dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_control_point_black_24dp" />
+        app:srcCompat="@drawable/ic_create_black_24dp" />
 
     <ListView
         android:id="@+id/DiaryListView"
@@ -37,7 +37,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
         android:layout_marginBottom="8dp"
-        android:text="N/A"
+        android:text="@string/notAvailablePlaceholder"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/calcBtn1"
         app:layout_constraintStart_toEndOf="@+id/textView" />
@@ -47,7 +47,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:text="Daily Average:"
+        android:text="@string/dailyAVGHeading"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="@+id/dailyAverageText"
         app:layout_constraintStart_toStartOf="parent"

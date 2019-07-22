@@ -21,7 +21,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Food: "
+            android:text="@string/foodHeader2"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -34,7 +34,7 @@
             android:layout_weight="1"
             android:autofillHints=""
             android:ems="10"
-            android:hint="Breakfast"
+            android:hint="@string/breakfastHeader"
             android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -47,7 +47,7 @@
             android:layout_weight="1"
             android:autofillHints=""
             android:ems="10"
-            android:hint="Lunch"
+            android:hint="@string/lunchHeader"
             android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -59,7 +59,7 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Dinner"
+            android:hint="@string/dinnerHeading"
             android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -82,7 +82,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_marginTop="16dp"
-            android:text="Exercise: "
+            android:text="@string/exerciseHeader2"
             android:textSize="24sp"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
@@ -95,7 +95,7 @@
             android:layout_weight="1"
             android:autofillHints=""
             android:ems="10"
-            android:hint="Running"
+            android:hint="@string/runningHeader"
             android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -108,7 +108,7 @@
             android:layout_weight="1"
             android:autofillHints=""
             android:ems="10"
-            android:hint="Gym"
+            android:hint="@string/gymHeader"
             android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -120,7 +120,7 @@
             android:layout_marginTop="16dp"
             android:layout_weight="1"
             android:ems="10"
-            android:hint="Other"
+            android:hint="@string/otherHeader"
             android:inputType="number"
             android:textAlignment="center"
             android:textSize="20sp" />
@@ -142,7 +142,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:layout_weight="1"
-        android:text="Food Total:"
+        android:text="@string/foodTotalHeader"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="@+id/ExcersiseTotalTextView"
         app:layout_constraintTop_toBottomOf="@+id/HR1" />
@@ -155,7 +155,7 @@
         android:layout_marginTop="8dp"
         android:layout_marginBottom="8dp"
         android:layout_weight="1"
-        android:text="Exercise Total:"
+        android:text="@string/exerciseTotalHeader"
         android:textSize="24sp"
         app:layout_constraintBottom_toTopOf="@+id/NetTotalTextView"
         app:layout_constraintStart_toEndOf="@+id/CancelFab"
@@ -167,7 +167,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="16dp"
         android:layout_weight="1"
-        android:text="Net Total:"
+        android:text="@string/netTotalHeader"
         android:textSize="24sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="@+id/ExcersiseTotalTextView" />
@@ -246,7 +246,7 @@
 
     <EditText
         android:id="@+id/CalcDatePicker"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="24dp"
         android:layout_marginEnd="24dp"
@@ -258,7 +258,7 @@
         android:focusableInTouchMode="false"
         android:focusedByDefault="false"
         android:gravity="center_vertical"
-        android:hint="Select date"
+        android:hint="@string/datePickHint"
         android:inputType="date"
         android:lineSpacingExtra="0sp"
         android:linksClickable="false"

@@ -12,8 +12,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/foodDeetsHeading"
+        android:text="@string/foodHeader"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -40,7 +39,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="33.333"
             android:singleLine="false"
-            android:text="Breakfast"
+            android:text="@string/breakfastHeader"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -50,7 +49,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="33.333"
             android:singleLine="false"
-            android:text="Lunch"
+            android:text="@string/lunchHeader"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -60,7 +59,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="33.333"
             android:singleLine="false"
-            android:text="Dinner"
+            android:text="@string/dinnerHeading"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -82,8 +81,8 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="16dp"
         android:ems="10"
-        android:inputType="textPersonName"
-        android:text="@string/exeDeetsHeader"
+        android:inputType="none"
+        android:text="@string/exerciseHeader"
         android:textAlignment="center"
         android:textSize="24sp"
         app:layout_constraintEnd_toEndOf="parent"
@@ -108,7 +107,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="33.333"
             android:singleLine="false"
-            android:text="Running"
+            android:text="@string/runningHeader"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -118,7 +117,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="33.333"
             android:singleLine="false"
-            android:text="Gym"
+            android:text="@string/gymHeader"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -128,7 +127,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="33.333"
             android:singleLine="false"
-            android:text="Other"
+            android:text="@string/otherHeader"
             android:textAlignment="center"
             android:textSize="24sp" />
 
@@ -162,7 +161,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="KNI Total:"
+            android:text="@string/netNKIHeader"
             android:textAlignment="viewEnd"
             android:textSize="24sp" />
 
@@ -203,7 +202,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="50"
-            android:text="Date:"
+            android:text="@string/dateHeader"
             android:textAlignment="viewEnd"
             android:textSize="24sp" />
 
@@ -213,7 +212,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="50"
             android:paddingStart="8dp"
-            android:text="TextView"
             android:textSize="24sp" />
     </LinearLayout>
 
@@ -224,18 +222,19 @@
         android:layout_marginTop="7dp"
         android:layout_weight="1"
         android:background="?android:attr/listDivider"
-        app:layout_constraintBottom_toTopOf="@+id/linearLayout4"
+        app:layout_constraintBottom_toTopOf="@+id/navLinearLayout"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout5" />
 
     <LinearLayout
-        android:id="@+id/linearLayout4"
+        android:id="@+id/navLinearLayout"
+        style="?android:attr/buttonBarStyle"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="32dp"
-        android:layout_marginBottom="8dp"
-        android:gravity="center"
+        android:layout_marginBottom="16dp"
+        android:gravity="fill_vertical|fill_horizontal|center"
         android:orientation="horizontal"
         android:paddingLeft="5dp"
         android:paddingRight="5dp"
@@ -247,35 +246,41 @@
 
         <Button
             android:id="@+id/previousEntryBtn"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:onClick="prevEntryClick"
-            android:text="Prev" />
+            android:layout_height="70dp"
+            android:layout_weight="20"
+            android:background="@drawable/ic_chevron_left_black_24dp"
+            android:onClick="prevEntryClick" />
 
         <Button
             android:id="@+id/overviewBtn"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
+            android:layout_height="70dp"
+            android:layout_weight="30"
             android:onClick="overviewClick"
-            android:text="Overview" />
+            android:text="@string/homeHeader"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/newEntryBtn"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
+            android:layout_height="70dp"
+            android:layout_weight="30"
             android:onClick="launchCalcClick"
-            android:text="New Entry" />
+            android:text="@string/newEntryHeader"
+            android:textColor="@android:color/black" />
 
         <Button
             android:id="@+id/nextEntryBtn"
+            style="?android:attr/buttonBarButtonStyle"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="25"
-            android:onClick="nextEntryClick"
-            android:text="Next" />
+            android:layout_height="70dp"
+            android:layout_weight="20"
+            android:background="@drawable/ic_chevron_right_black_24dp"
+            android:onClick="nextEntryClick" />
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

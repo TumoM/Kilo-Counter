@@ -46,6 +46,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     private EditText otherET;
     ArrayList<DiaryBundle> diaryEntires = new ArrayList<>(3);
     Gson gson = new Gson();
+    String suffix;
 
 
 
@@ -53,7 +54,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
-
+        suffix = getString(R.string.measure_unit);
         this.diaryEntires = (ArrayList<DiaryBundle>) getIntent().getExtras().get("diaryBundleArrayList");
 
         dateTV = (EditText) findViewById(R.id.CalcDatePicker);
@@ -127,10 +128,10 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 }*/
                 if (cat1) {
                     Log.e("afterTextChangedBOY", "Value: \"" + otherCat1.toString() + "\"");
-                    runningTotal += Integer.parseInt(otherCat1.getText().toString());
+                    runningTotal += Integer.parseInt(otherCat1.getText().toString().split(" "+suffix)[0]);
                 }
                 if (cat2) {
-                    runningTotal -= Integer.parseInt(otherCat2.getText().toString());
+                    runningTotal -= Integer.parseInt(otherCat2.getText().toString().split(" "+suffix)[0]);
 
                 }
 
@@ -144,7 +145,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 else{
                     targetName.setTextColor(Color.GREEN);
                 }
-                targetName.setText(String.valueOf(runningTotal)+" "+getString(R.string.measure_unit));
+                targetName.setText(String.format("%s %s", String.valueOf(runningTotal), getString(R.string.measure_unit)));
 
             }
         };
@@ -178,16 +179,16 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 Boolean validTarget = (targetName.getText().toString().length() > 0);
                 int runningTotal = 0;
                 if (validTarget){
-                runningTotal = Integer.parseInt(targetName.getText().toString());
+                runningTotal = Integer.parseInt(targetName.getText().toString().split(" "+suffix)[0]);
                 }
 
                 if (thisVal) {
 
-                    runningTotal = Integer.parseInt(editable.toString());
+                    runningTotal = Integer.parseInt(editable.toString().split(" "+suffix)[0]);
                 }
                 else{
                     runningTotal = 0;
-                    targetName.setText(String.valueOf(runningTotal));
+                    targetName.setText(String.valueOf(runningTotal).split(" "+suffix)[0]);
 
                 }
                     if (cat1){
@@ -199,7 +200,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
                     }
 
-                targetName.setText(String.valueOf(runningTotal));
+                targetName.setText(String.format("%s %s", String.valueOf(runningTotal), getString(R.string.measure_unit)));
             }
         };
     }
@@ -291,28 +292,10 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 Snackbar.make(view, "Adding the new entry", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
+                String suffix = getString(R.string.measure_unit);
+                DiaryBundle diaryBundle = getDiaryBundle(suffix);
                 // Todo Add new entry to diaryBundleArrayList
-                DiaryBundle diaryBundle = new DiaryBundle();
-                diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
-                diaryBundle.setDate(dateTV.getText().toString());
-                if (!breakfastET.getText().toString().equals("")) {
-                    diaryBundle.setFoodArr(0, Integer.parseInt(breakfastET.getText().toString()));
-                } else {diaryBundle.setFoodArr(0,0);}
-                if (!lunchET.getText().toString().equals("")) {
-                    diaryBundle.setFoodArr(1, Integer.parseInt(lunchET.getText().toString()));
-                } else {diaryBundle.setFoodArr(1,0);}
-                if (!dinnerET.getText().toString().equals("")) {
-                    diaryBundle.setFoodArr(2, Integer.parseInt(dinnerET.getText().toString()));
-                } else {diaryBundle.setFoodArr(2,0);}
-                if (!runningET.getText().toString().equals("")) {
-                    diaryBundle.setExeArr(0, Integer.parseInt(runningET.getText().toString()));
-                } else {diaryBundle.setExeArr(0,0);}
-                if (!gymET.getText().toString().equals("")) {
-                    diaryBundle.setExeArr(1, Integer.parseInt(gymET.getText().toString()));
-                } else {diaryBundle.setExeArr(1,0);}
-                if (!otherET.getText().toString().equals("")) {
-                    diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
-                } else {diaryBundle.setExeArr(2,0);}
+
                 if (this.diaryEntires != null) {
                     this.diaryEntires.add(diaryBundle);
                 }
@@ -339,11 +322,39 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
             }
     }
 
+    @NonNull
+    private DiaryBundle getDiaryBundle(String suffix) {
+        DiaryBundle diaryBundle = new DiaryBundle();
+        diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString().split(" "+suffix)[0]));
+        diaryBundle.setDate(dateTV.getText().toString());
+        if (!breakfastET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(0, Integer.parseInt(breakfastET.getText().toString().split(" "+suffix)[0]));
+        } else {diaryBundle.setFoodArr(0,0);}
+        if (!lunchET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(1, Integer.parseInt(lunchET.getText().toString().split(" "+suffix)[0]));
+        } else {diaryBundle.setFoodArr(1,0);}
+        if (!dinnerET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(2, Integer.parseInt(dinnerET.getText().toString().split(" "+suffix)[0]));
+        } else {diaryBundle.setFoodArr(2,0);}
+        if (!runningET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(0, Integer.parseInt(runningET.getText().toString().split(" "+suffix)[0]));
+        } else {diaryBundle.setExeArr(0,0);}
+        if (!gymET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(1, Integer.parseInt(gymET.getText().toString().split(" "+suffix)[0]));
+        } else {diaryBundle.setExeArr(1,0);}
+        if (!otherET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString().split(" "+suffix)[0]));
+        } else {diaryBundle.setExeArr(2,0);}
+        return diaryBundle;
+    }
+
     // Todo Finish this. Pull out all EditText text data, including date.
     private void SavePreferences(){
         SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
-        // Todo Put data into the editor.putExtra("state", button.isEnabled());
+        String suffix = getString(R.string.measure_unit);
+        DiaryBundle diaryBundle = getDiaryBundle(suffix);
+        /*// Todo Put data into the editor.putExtra("state", button.isEnabled());
         DiaryBundle diaryBundle = new DiaryBundle();
         diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
         diaryBundle.setDate(dateTV.getText().toString());
@@ -365,7 +376,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         if (!otherET.getText().toString().equals("")) {
             diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
         } else {diaryBundle.setExeArr(2,0);}
-
+*/
         String json = gson.toJson(diaryBundle);
         Collections.sort(diaryEntires);
         String listJSON = gson.toJson(diaryEntires);

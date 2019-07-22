@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Kilo Counter</string>
+    <string name="app_name" translatable="false">Kilo Counter</string>
     <string name="action_settings">Settings</string>
     <string name="title_activity_diary">Diary</string>
     <string name="title_home">Home</string>
@@ -7,6 +7,26 @@
     <string name="title_notifications">Notifications</string>
     <string name="title_activity_overview">Overview</string>
     <string name="measure_unit"> kJ</string>
-    <string name="exeDeetsHeader"><u>Exercise</u></string>
-    <string name="foodDeetsHeading"><u>Food</u></string>
+    <string name="exerciseHeader" translatable="false"><u>Exercise</u></string>
+    <string name="foodHeader"><u>Food</u></string>
+    <string name="dailyAVGHeading">Daily Average:</string>
+    <string name="notAvailablePlaceholder" translatable="false">N/A</string>
+    <string name="breakfastHeader">Breakfast</string>
+    <string name="lunchHeader">Lunch</string>
+    <string name="dinnerHeading" translatable="false">Dinner</string>
+    <string name="runningHeader">Running</string>
+    <string name="gymHeader" translatable="false">Gym</string>
+    <string name="otherHeader">Other</string>
+    <string name="netNKIHeader">Net Intake:</string>
+    <string name="dateHeader">Date</string>
+    <string name="nextHeader" translatable="false">Next</string>
+    <string name="previousHeader" translatable="false">Prev.</string>
+    <string name="homeHeader">Home</string>
+    <string name="newEntryHeader">Add New</string>
+    <string name="exerciseHeader2" translatable="false">Exercise:</string>
+    <string name="foodHeader2">Food:</string>
+    <string name="foodTotalHeader">Food Total:</string>
+    <string name="exerciseTotalHeader">Exercise Total:</string>
+    <string name="netTotalHeader">Net Total:</string>
+    <string name="datePickHint">Click to select date</string>
 </resources>

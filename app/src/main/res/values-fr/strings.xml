@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_settings">Réglages</string>
+    <string name="title_activity_diary">Journal</string>
+    <string name="title_home">Accueil</string>
+    <string name="title_notifications">Les notifications</string>
+    <string name="measure_unit">kJs</string>
+    <string name="foodHeader"><u>Aliments</u></string>
+    <string name="homeHeader">Accueil</string>
+    <string name="netTotalHeader">Total Net:</string>
+    <string name="foodTotalHeader">Total Alimentaire:</string>
+    <string name="foodHeader2">Aliments:</string>
+    <string name="newEntryHeader" translatable="false">Nouvelle</string>
+    <string name="dateHeader">Rendez-vous:</string>
+    <string name="netNKIHeader">Apport net:</string>
+    <string name="otherHeader">Autre</string>
+    <string name="runningHeader">Fonctionnement</string>
+    <string name="lunchHeader">Le déjeuner</string>
+    <string name="breakfastHeader">Petit déjeuner</string>
+    <string name="dailyAVGHeading">Moyenne Quotidienne:</string>
+    <string name="title_activity_overview">Vue d\'ensemble</string>
+    <string name="title_dashboard">Tableau de bord</string>
+    <string name="exerciseTotalHeader">Total Exercise</string>
+    <string name="datePickHint">Cliquez pour la date</string>
+</resources>

@@ -19,14 +19,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".Activities.DiaryActivity"
-            android:label="@string/title_activity_diary" />
         <activity android:name=".Activities.CalcActivity" />
-        <activity
-            android:name=".OverviewActivity"
-            android:label="@string/title_activity_overview"
-            android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.DiaryDeets"></activity>
         <receiver android:name=".Helpers.ListUpdateReciever">
 
