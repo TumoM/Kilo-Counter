@@ -1,11 +1,13 @@
 package com.example.android.kilocounter.Helpers;
 
+import android.icu.util.Calendar;
 import android.os.Parcel;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 
 import com.example.android.kilocounter.Models.DiaryEntryModel;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 
@@ -27,7 +29,14 @@ public class DiaryBundle extends DiaryEntryModel implements Parcelable {
     }
 
     public DiaryBundle(int NKI, String date) {
-        this.date = date;
+        String dateTime[] = date.split("/");
+        //Log.d("onDateSetReturned", String.valueOf(year + ' ' + month + ' ' + dayOfMonth));
+        Calendar c = Calendar.getInstance();
+        c.set(Calendar.YEAR, Integer.parseInt(dateTime[0]));
+        c.set(Calendar.MONTH, Integer.parseInt(dateTime[1]));
+        c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateTime[2]));
+        String currentDateString = DateFormat.getDateInstance(DateFormat.LONG).format(c.getTime());
+        this.date = currentDateString;
         this.NKI = NKI;
         this.foodArr.addAll(Arrays.asList(0,0,0));
         this.exeArr.addAll(Arrays.asList(0,0,0));

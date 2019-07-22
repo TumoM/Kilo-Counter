@@ -1,6 +1,7 @@
 package com.example.android.kilocounter.Helpers;
 
 import android.content.Context;
+import android.icu.util.Calendar;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -12,6 +13,7 @@ import android.widget.TextView;
 import com.example.android.kilocounter.Models.DiaryEntryModel;
 import com.example.android.kilocounter.R;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 
 public class DiaryListAdapter extends ArrayAdapter<DiaryBundle> {
@@ -39,7 +41,15 @@ public class DiaryListAdapter extends ArrayAdapter<DiaryBundle> {
         int netCal = getItem(position).getNKI();
         String date = getItem(position).getDate();
 
-        DiaryEntryModel diaryEntryModel = new DiaryEntryModel(netCal, date);
+        if (date.split("/").length > 1) {
+            String dateTime[] = date.split("/");
+            //Log.d("onDateSetReturned", String.valueOf(year + ' ' + month + ' ' + dayOfMonth));
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.parseInt(dateTime[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(dateTime[1]));
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateTime[2]));
+            date = DateFormat.getDateInstance(DateFormat.LONG).format(c.getTime());
+        }
 
 
         // Todo make this thread safe?

@@ -71,7 +71,7 @@ public class DiaryDeets extends AppCompatActivity {
         Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
         this.startActivity(intent);
-        this.finish();
+        this.finishAffinity();
     }
 
     public void nextEntryClick(View view) throws CloneNotSupportedException {

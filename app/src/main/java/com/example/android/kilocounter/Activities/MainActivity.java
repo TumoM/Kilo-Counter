@@ -116,7 +116,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,DiaryDeets.class);
 
                 //Todo Pass the information of the clicked entry to the Details screen.
-                intent.putExtra("data", new DiaryBundle(item.getDate(),item.getNKI()));
+                intent.putExtra("data", diaryEntires.get(position));
                 intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
