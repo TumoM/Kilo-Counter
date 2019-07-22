@@ -3,6 +3,7 @@ package com.example.android.kilocounter.Activities;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -48,14 +49,25 @@ public class DiaryDeets extends AppCompatActivity {
         TextView otherTV = (TextView) findViewById(R.id.otherTV);
 
 
-        nkiTV.setText(String.valueOf(entry.getNKI()));
+        int runningTotal = entry.getNKI();
+        nkiTV.setText(String.valueOf(runningTotal)+" "+getString(R.string.measure_unit));
         dateTV.setText(entry.getDate());
-        breakfastTV.setText("Breakfast:\n" + entry.getExeArr().get(0).toString());
-        lunchTV.setText("lunch:\n" + entry.getExeArr().get(1).toString());
-        dinnerTV.setText("Dinner:\n" + entry.getExeArr().get(2).toString());
-        runningTV.setText("Run:\n" + entry.getFoodArr().get(0).toString());
-        gymTV.setText("Gym:\n" + entry.getFoodArr().get(1).toString());
-        otherTV.setText("Other:\n" + entry.getFoodArr().get(2).toString());
+        breakfastTV.setText("Breakfast:\n" + entry.getExeArr().get(0).toString() +" "+getString(R.string.measure_unit));
+        lunchTV.setText("lunch:\n" + entry.getExeArr().get(1).toString()+" "+getString(R.string.measure_unit));
+        dinnerTV.setText("Dinner:\n" + entry.getExeArr().get(2).toString()+" "+getString(R.string.measure_unit));
+        runningTV.setText("Run:\n" + entry.getFoodArr().get(0).toString()+" "+getString(R.string.measure_unit));
+        gymTV.setText("Gym:\n" + entry.getFoodArr().get(1).toString()+" "+getString(R.string.measure_unit));
+        otherTV.setText("Other:\n" + entry.getFoodArr().get(2).toString()+" "+getString(R.string.measure_unit));
+        if (runningTotal == 0){
+            nkiTV.setTextColor(Color.GRAY);
+        }
+        else if (runningTotal < 0){
+            nkiTV.setTextColor(Color.RED);
+
+        }
+        else{
+            nkiTV.setTextColor(Color.GREEN);
+        }
 
         LoadPreferences();
     }
@@ -70,8 +82,10 @@ public class DiaryDeets extends AppCompatActivity {
     public void overviewClick(View view){
         Intent intent = new Intent(this,MainActivity.class);
         intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         this.startActivity(intent);
-        this.finishAffinity();
+        finishAffinity();
+        finish();
     }
 
     public void nextEntryClick(View view) throws CloneNotSupportedException {

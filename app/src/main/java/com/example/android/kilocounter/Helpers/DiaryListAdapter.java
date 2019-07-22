@@ -61,7 +61,7 @@ public class DiaryListAdapter extends ArrayAdapter<DiaryBundle> {
         TextView kiloCal = (TextView) convertView.findViewById(R.id.KilojoulCountTextView);
         TextView dateText = (TextView) convertView.findViewById(R.id.DiaryDateTextView);
 
-        kiloCal.setText(Integer.toString(netCal));
+        kiloCal.setText((Integer.toString(netCal)+ " "+ mContext.getString(R.string.measure_unit)));
         dateText.setText(date);
 
         return convertView;

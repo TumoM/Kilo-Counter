@@ -144,7 +144,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 else{
                     targetName.setTextColor(Color.GREEN);
                 }
-                targetName.setText(String.valueOf(runningTotal));
+                targetName.setText(String.valueOf(runningTotal)+" "+getString(R.string.measure_unit));
 
             }
         };
