@@ -33,9 +33,9 @@ public class DiaryDeets extends AppCompatActivity {
 
         // Get a Bundle from the MainActivity, which contains the data to be displayed in detail.
         Bundle data = getIntent().getExtras();
+        this.diaryBundleArrayList = (ArrayList<DiaryBundle>) data.get("diaryBundleArrayList");
         assert data != null;
         this.entry = (DiaryBundle) data.getParcelable("data");
-        this.diaryBundleArrayList = data.getParcelableArrayList("diaryBundleArrayList");
         this.index = data.getInt("index");
 
         TextView nkiTV = (TextView) findViewById(R.id.nkiTV);
@@ -69,7 +69,7 @@ public class DiaryDeets extends AppCompatActivity {
 
     public void overviewClick(View view){
         Intent intent = new Intent(this,MainActivity.class);
-        intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryBundleArrayList);
+        intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
         this.startActivity(intent);
         this.finish();
     }
@@ -80,7 +80,7 @@ public class DiaryDeets extends AppCompatActivity {
             DiaryBundle item = new DiaryBundle("null",1);
             item.clone(diaryBundleArrayList.get(index+1));
             intent.putExtra("data", item);
-            intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryBundleArrayList);
+            intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
             intent.putExtra("index", index+1);
             this.startActivity(intent);
         } else {
@@ -96,7 +96,7 @@ public class DiaryDeets extends AppCompatActivity {
             DiaryBundle item = new DiaryBundle("null",1);
             item.clone(diaryBundleArrayList.get(index-1));
             intent.putExtra("data", item);
-            intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryBundleArrayList);
+            intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
             intent.putExtra("index", (index-1));
             this.startActivity(intent);
         } else {

@@ -80,6 +80,10 @@ public class MainActivity extends AppCompatActivity {
             this.diaryEntires.add(diaryEntryModel4);
         }
 
+        Bundle data = getIntent().getExtras();
+        if (((ArrayList<DiaryBundle>) data.get("diaryBundleArrayList")).size() > 0) {
+            this.diaryEntires = (ArrayList<DiaryBundle>) data.get("diaryBundleArrayList");
+        }
 
         Collections.sort(diaryEntires);
         adapter = new DiaryListAdapter(this,R.layout.diary_item,diaryEntires);
@@ -122,7 +126,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,CalcActivity.class);
 
                 intent.putExtra("movie", "N/A");
-                intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
+                intent.putExtra("diaryBundleArrayList", diaryEntires);
                 mContext.startActivity(intent);
             }
         });

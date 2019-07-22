@@ -53,7 +53,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
 
-        this.diaryEntires = getIntent().getParcelableArrayListExtra("diaryBundleArrayList");
+        this.diaryEntires = (ArrayList<DiaryBundle>) getIntent().getExtras().get("diaryBundleArrayList");
 
         dateTV = (EditText) findViewById(R.id.CalcDatePicker);
         dateTV.setShowSoftInputOnFocus(false);
@@ -324,7 +324,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 int position = diaryEntires.indexOf(diaryBundle);
                 Intent intent = new Intent(this, DiaryDeets.class);
                 intent.putExtra("data", new DiaryBundle(diaryBundle));
-                intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
+                intent.putExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 String listJSON = gson.toJson(diaryEntires);
