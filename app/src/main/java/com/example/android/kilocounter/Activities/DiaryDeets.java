@@ -50,12 +50,12 @@ public class DiaryDeets extends AppCompatActivity {
 
         nkiTV.setText(String.valueOf(entry.getNKI()));
         dateTV.setText(entry.getDate());
-        breakfastTV.setText("Breakfast: " + entry.getFoodArr().get(0).toString());
-        lunchTV.setText("lunch: " + entry.getFoodArr().get(1).toString());
-        dinnerTV.setText("Dinner: " + entry.getFoodArr().get(2).toString());
-        runningTV.setText("Run: " + entry.getExeArr().get(0).toString());
-        gymTV.setText("Gym: " + entry.getExeArr().get(1).toString());
-        otherTV.setText("Other: " + entry.getExeArr().get(2).toString());
+        breakfastTV.setText("Breakfast:\n" + entry.getExeArr().get(0).toString());
+        lunchTV.setText("lunch:\n" + entry.getExeArr().get(1).toString());
+        dinnerTV.setText("Dinner:\n" + entry.getExeArr().get(2).toString());
+        runningTV.setText("Run:\n" + entry.getFoodArr().get(0).toString());
+        gymTV.setText("Gym:\n" + entry.getFoodArr().get(1).toString());
+        otherTV.setText("Other:\n" + entry.getFoodArr().get(2).toString());
 
         LoadPreferences();
     }
@@ -107,7 +107,7 @@ public class DiaryDeets extends AppCompatActivity {
     }
 
     private void LoadPreferences() {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         String listJSON = sharedPreferences.getString("jsonList", null);
         if (listJSON != null) {
             Gson gson = new Gson();

@@ -3,6 +3,7 @@ package com.example.android.kilocounter.Activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 // import android.app.DialogFragment;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -253,12 +254,11 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
         Log.d("onDateSetReturned", String.valueOf(year + ' ' + month + ' ' + dayOfMonth));
-        Toast.makeText(this, String.valueOf(year + ' ' + month + ' ' + dayOfMonth), Toast.LENGTH_SHORT).show();
         Calendar c = Calendar.getInstance();
         c.set(Calendar.YEAR, year);
         c.set(Calendar.MONTH, month);
         c.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-        String currentDateString = DateFormat.getDateInstance(DateFormat.DEFAULT).format(c.getTime());
+        String currentDateString = DateFormat.getDateInstance(DateFormat.LONG).format(c.getTime());
 
         EditText editText = (EditText) findViewById(R.id.CalcDatePicker);
         editText.setText(currentDateString);
@@ -272,7 +272,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
      * @param view Gives us context of the calling application.
      */
     public void goBackClick(View view){
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("jsonData", null);
         editor.remove("jsonData");
@@ -281,7 +281,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     public void newEntryClick(View view) throws CloneNotSupportedException {
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         // Todo Check if Date + Values present.
             assert dateTV !=null;
             if (dateTV.getText().length() < 1) {
@@ -323,7 +323,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 Collections.sort(diaryEntires);
                 int position = diaryEntires.indexOf(diaryBundle);
                 Intent intent = new Intent(this, DiaryDeets.class);
-                intent.putExtra("data", new DiaryBundle(diaryBundle));
+                intent.putExtra("data", diaryBundle);
                 intent.putExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -341,7 +341,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
     // Todo Finish this. Pull out all EditText text data, including date.
     private void SavePreferences(){
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         // Todo Put data into the editor.putExtra("state", button.isEnabled());
         DiaryBundle diaryBundle = new DiaryBundle();
@@ -367,6 +367,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         } else {diaryBundle.setExeArr(2,0);}
 
         String json = gson.toJson(diaryBundle);
+        Collections.sort(diaryEntires);
         String listJSON = gson.toJson(diaryEntires);
         editor.putString("jsonData", json);
         editor.putString("jsonList", listJSON);
@@ -400,7 +401,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void LoadPreferences(){
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         String jsonData = sharedPreferences.getString("jsonData", null);
         if (jsonData != null){
             Gson gson = new Gson();

@@ -42,9 +42,10 @@ public class MainActivity extends AppCompatActivity {
     protected void onPostResume() {
         super.onPostResume();
         String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
-        Type feedsType = new TypeToken<ArrayList<Integer>>(){}.getType();
+        Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
         Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
         if (listJSON != null) {
+            ArrayList<DiaryBundle> temp = gson.fromJson(listJSON, feedsType);
             this.diaryEntires = gson.fromJson(listJSON, feedsType);
             adapter.notifyDataSetChanged();
         }
@@ -57,7 +58,7 @@ public class MainActivity extends AppCompatActivity {
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         mContext = this;
-        sharedPreferences = getPreferences(MODE_PRIVATE);
+        sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
 
         ListView listView = (ListView) findViewById(R.id.DiaryListView);
 
@@ -69,7 +70,16 @@ public class MainActivity extends AppCompatActivity {
         DiaryBundle diaryEntryModel6 = new DiaryBundle(500, "2019/05/25");
         DiaryBundle diaryEntryModel7 = new DiaryBundle(0, "2019/05/26");
 
-        if (sharedPreferences.getString("diaryBundleArrayList",null) == null) {
+        //if (sharedPreferences.getString("diaryBundleArrayList",null).length()  null) {
+
+        //}
+        String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
+        Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
+        Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
+        if (listJSON != null) {
+            ArrayList<DiaryBundle> temp = gson.fromJson(listJSON, feedsType);
+            this.diaryEntires = gson.fromJson(listJSON, feedsType);
+        }else{
             this.diaryEntires = new ArrayList<>();
             this.diaryEntires.add(diaryEntryModel1);
             this.diaryEntires.add(diaryEntryModel2);
@@ -78,11 +88,6 @@ public class MainActivity extends AppCompatActivity {
             this.diaryEntires.add(diaryEntryModel7);
             this.diaryEntires.add(diaryEntryModel3);
             this.diaryEntires.add(diaryEntryModel4);
-        }
-
-        Bundle data = getIntent().getExtras();
-        if (((ArrayList<DiaryBundle>) data.get("diaryBundleArrayList")).size() > 0) {
-            this.diaryEntires = (ArrayList<DiaryBundle>) data.get("diaryBundleArrayList");
         }
 
         Collections.sort(diaryEntires);
@@ -94,7 +99,10 @@ public class MainActivity extends AppCompatActivity {
         for (DiaryBundle b:diaryEntires){
             average += b.getNKI();
         }
-        average = average/diaryEntires.size();
+        if (diaryEntires.size() > 0){
+            average = average/diaryEntires.size();
+        }
+
         dailyAverageText.setText(String.valueOf(average));
 
 
@@ -111,6 +119,10 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("data", new DiaryBundle(item.getDate(),item.getNKI()));
                 intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String listJSON = gson.toJson(diaryEntires);
+                editor.putString("diaryBundleArrayList",listJSON);
+                editor.commit();
                 //based on item add info to intent
                 startActivity(intent);
             }

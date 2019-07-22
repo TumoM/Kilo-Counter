@@ -1,12 +1,29 @@
 package com.example.android.kilocounter.Models;
 
+import android.icu.util.Calendar;
 import android.support.annotation.NonNull;
+import android.util.Log;
+import android.widget.DatePicker;
+import android.widget.EditText;
+
+import com.example.android.kilocounter.R;
+
+import java.text.DateFormat;
 
 public class DiaryEntryModel implements Comparable<DiaryEntryModel> {
     protected String date;
     protected int NKI;
+    protected Calendar cal;
 
     public DiaryEntryModel(int NKI, String date) {
+       /* String dateTime[] = date.split("/");
+            //Log.d("onDateSetReturned", String.valueOf(year + ' ' + month + ' ' + dayOfMonth));
+            Calendar c = Calendar.getInstance();
+            c.set(Calendar.YEAR, Integer.parseInt(dateTime[0]));
+            c.set(Calendar.MONTH, Integer.parseInt(dateTime[1]));
+            c.set(Calendar.DAY_OF_MONTH, Integer.parseInt(dateTime[2]));
+            String currentDateString = DateFormat.getDateInstance(DateFormat.DEFAULT).format(c.getTime());
+*/
         this.date = date;
         this.NKI = NKI;
     }
