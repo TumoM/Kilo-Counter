@@ -28,6 +28,14 @@
             android:label="@string/title_activity_overview"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".Activities.DiaryDeets"></activity>
+        <receiver android:name=".Helpers.ListUpdateReciever">
+
+            <intent-filter>
+                <action android:name="ListUpadate">
+                </action>
+            </intent-filter>
+
+        </receiver>
     </application>
 
 </manifest>

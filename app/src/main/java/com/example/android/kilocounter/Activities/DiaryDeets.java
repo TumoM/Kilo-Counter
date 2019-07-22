@@ -63,6 +63,7 @@ public class DiaryDeets extends AppCompatActivity {
 
     public void overviewClick(View view){
         Intent intent = new Intent(this,MainActivity.class);
+        intent.putParcelableArrayListExtra("list",list);
         this.startActivity(intent);
         this.finish();
     }
@@ -73,7 +74,7 @@ public class DiaryDeets extends AppCompatActivity {
             DiaryBundle item = new DiaryBundle("null",1);
             item.clone(list.get(index+1));
             intent.putExtra("data", item);
-            intent.putExtra("list", list);
+            intent.putParcelableArrayListExtra("list", list);
             intent.putExtra("index", index+1);
             this.startActivity(intent);
         } else {
@@ -89,7 +90,7 @@ public class DiaryDeets extends AppCompatActivity {
             DiaryBundle item = new DiaryBundle("null",1);
             item.clone(list.get(index-1));
             intent.putExtra("data", item);
-            intent.putExtra("list", list);
+            intent.putParcelableArrayListExtra("list", list);
             intent.putExtra("index", (index-1));
             this.startActivity(intent);
         } else {

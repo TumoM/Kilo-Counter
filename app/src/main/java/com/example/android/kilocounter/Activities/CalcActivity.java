@@ -3,8 +3,10 @@ package com.example.android.kilocounter.Activities;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 // import android.app.DialogFragment;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
 import android.icu.util.Calendar;
@@ -25,6 +27,8 @@ import com.example.android.kilocounter.R;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Objects;
 
 public class CalcActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
@@ -39,12 +43,17 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     private EditText dinnerET;
     private EditText gymET;
     private EditText otherET;
+    ArrayList<DiaryBundle> diaryEntires = new ArrayList<>(3);
+    Gson gson = new Gson();
+
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
+
+        this.diaryEntires = getIntent().getParcelableArrayListExtra("list");
 
         dateTV = (EditText) findViewById(R.id.CalcDatePicker);
         dateTV.setShowSoftInputOnFocus(false);
@@ -271,7 +280,8 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         finish();
     }
 
-    public void newEntryClick(View view){
+    public void newEntryClick(View view) throws CloneNotSupportedException {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         // Todo Check if Date + Values present.
             assert dateTV !=null;
             if (dateTV.getText().length() < 1) {
@@ -282,6 +292,48 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                         .setAction("Action", null).show();
 
                 // Todo Add new entry to list
+                DiaryBundle diaryBundle = new DiaryBundle();
+                diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
+                diaryBundle.setDate(dateTV.getText().toString());
+                if (!breakfastET.getText().toString().equals("")) {
+                    diaryBundle.setFoodArr(0, Integer.parseInt(breakfastET.getText().toString()));
+                } else {diaryBundle.setFoodArr(0,0);}
+                if (!lunchET.getText().toString().equals("")) {
+                    diaryBundle.setFoodArr(1, Integer.parseInt(lunchET.getText().toString()));
+                } else {diaryBundle.setFoodArr(1,0);}
+                if (!dinnerET.getText().toString().equals("")) {
+                    diaryBundle.setFoodArr(2, Integer.parseInt(dinnerET.getText().toString()));
+                } else {diaryBundle.setFoodArr(2,0);}
+                if (!runningET.getText().toString().equals("")) {
+                    diaryBundle.setExeArr(0, Integer.parseInt(runningET.getText().toString()));
+                } else {diaryBundle.setExeArr(0,0);}
+                if (!gymET.getText().toString().equals("")) {
+                    diaryBundle.setExeArr(1, Integer.parseInt(gymET.getText().toString()));
+                } else {diaryBundle.setExeArr(1,0);}
+                if (!otherET.getText().toString().equals("")) {
+                    diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
+                } else {diaryBundle.setExeArr(2,0);}
+                if (this.diaryEntires != null) {
+                    this.diaryEntires.add(diaryBundle);
+                }
+                else {
+                    this.diaryEntires = new ArrayList<>();
+                    this.diaryEntires.add(diaryBundle);
+                }
+                Collections.sort(diaryEntires);
+                int position = diaryEntires.indexOf(diaryBundle);
+                Intent intent = new Intent(this, DiaryDeets.class);
+                intent.putExtra("data", new DiaryBundle(diaryBundle));
+                intent.putExtra("list", diaryEntires);
+                intent.putExtra("index", position);
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String listJSON = gson.toJson(diaryEntires);
+                editor.putString("list",listJSON);
+                editor.commit();
+                this.startActivity(intent);
+                finish();
+
+
 
                 // Todo Launch DiaryDeets Activity
             }
@@ -314,10 +366,37 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
             diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
         } else {diaryBundle.setExeArr(2,0);}
 
-        Gson gson = new Gson();
         String json = gson.toJson(diaryBundle);
+        String listJSON = gson.toJson(diaryEntires);
         editor.putString("jsonData", json);
+        editor.putString("jsonList", listJSON);
         editor.commit();   // I missed to save the data to preference here,.
+    }
+
+    @NonNull
+    private DiaryBundle getDiaryBundle() {
+        DiaryBundle diaryBundle = new DiaryBundle();
+        diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
+        diaryBundle.setDate(dateTV.getText().toString());
+        if (!breakfastET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(0, Integer.parseInt(breakfastET.getText().toString()));
+        } else {diaryBundle.setFoodArr(0,0);}
+        if (!lunchET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(1, Integer.parseInt(lunchET.getText().toString()));
+        } else {diaryBundle.setFoodArr(1,0);}
+        if (!dinnerET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(2, Integer.parseInt(dinnerET.getText().toString()));
+        } else {diaryBundle.setFoodArr(2,0);}
+        if (!runningET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(0, Integer.parseInt(runningET.getText().toString()));
+        } else {diaryBundle.setExeArr(0,0);}
+        if (!gymET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(1, Integer.parseInt(gymET.getText().toString()));
+        } else {diaryBundle.setExeArr(1,0);}
+        if (!otherET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
+        } else {diaryBundle.setExeArr(2,0);}
+        return diaryBundle;
     }
 
     private void LoadPreferences(){

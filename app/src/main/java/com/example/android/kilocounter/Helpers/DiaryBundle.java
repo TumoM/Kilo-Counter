@@ -48,7 +48,7 @@ public class DiaryBundle extends DiaryEntryModel implements Parcelable {
         this.exeArr = diaryBundle.getExeArr();
     }
 
-    DiaryBundle(DiaryBundle diaryBundle) throws CloneNotSupportedException {
+    public DiaryBundle(DiaryBundle diaryBundle) throws CloneNotSupportedException {
         this.clone(diaryBundle);
     }
 
