@@ -12,8 +12,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
+import android.widget.TextView;
 
-import com.example.android.kilocounter.Helpers.diaryBundle;
+import com.example.android.kilocounter.Helpers.DiaryBundle;
 import com.example.android.kilocounter.Models.DiaryEntryModel;
 import com.example.android.kilocounter.Helpers.DiaryListAdapter;
 import com.example.android.kilocounter.R;
@@ -36,15 +37,15 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.DiaryListView);
 
-        diaryBundle diaryEntryModel1 = new diaryBundle(100, "2019/05/20");
-        diaryBundle diaryEntryModel2 = new diaryBundle(-200, "2019/05/21");
-        diaryBundle diaryEntryModel3 = new diaryBundle(500, "2019/05/22");
-        diaryBundle diaryEntryModel4 = new diaryBundle(0, "2019/05/23");
-        diaryBundle diaryEntryModel5 = new diaryBundle(-200, "2019/05/24");
-        diaryBundle diaryEntryModel6 = new diaryBundle(500, "2019/05/25");
-        diaryBundle diaryEntryModel7 = new diaryBundle(0, "2019/05/26");
+        DiaryBundle diaryEntryModel1 = new DiaryBundle(100, "2019/05/20");
+        DiaryBundle diaryEntryModel2 = new DiaryBundle(-200, "2019/05/21");
+        DiaryBundle diaryEntryModel3 = new DiaryBundle(500, "2019/05/22");
+        DiaryBundle diaryEntryModel4 = new DiaryBundle(0, "2019/05/23");
+        DiaryBundle diaryEntryModel5 = new DiaryBundle(-200, "2019/05/24");
+        DiaryBundle diaryEntryModel6 = new DiaryBundle(500, "2019/05/25");
+        DiaryBundle diaryEntryModel7 = new DiaryBundle(0, "2019/05/26");
 
-        final ArrayList<diaryBundle> diaryEntires = new ArrayList<>();
+        final ArrayList<DiaryBundle> diaryEntires = new ArrayList<>();
         diaryEntires.add(diaryEntryModel1);
         diaryEntires.add(diaryEntryModel2);
         diaryEntires.add(diaryEntryModel5);
@@ -58,6 +59,14 @@ public class MainActivity extends AppCompatActivity {
         DiaryListAdapter adapter = new DiaryListAdapter(this,R.layout.diary_item,diaryEntires);
         listView.setAdapter(adapter);
 
+        TextView dailyAverageText = (TextView) findViewById(R.id.dailyAverageText);
+        int average = 0;
+        for (DiaryBundle b:diaryEntires){
+            average += b.getNKI();
+        }
+        average = average/diaryEntires.size();
+        dailyAverageText.setText(String.valueOf(average));
+
 
         // Sets the ListView onClick() listener after the view is populated.
         listView.setClickable(true);
@@ -69,7 +78,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,DiaryDeets.class);
 
                 //Todo Pass the information of the clicked entry to the Details screen.
-                intent.putExtra("data", new diaryBundle(item.getDate(),item.getNKI()));
+                intent.putExtra("data", new DiaryBundle(item.getDate(),item.getNKI()));
                 intent.putExtra("list", diaryEntires);
                 intent.putExtra("index", position);
                 //based on item add info to intent

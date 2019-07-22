@@ -3,8 +3,8 @@ package com.example.android.kilocounter.Models;
 import android.support.annotation.NonNull;
 
 public class DiaryEntryModel implements Comparable<DiaryEntryModel> {
-    String date;
-    int NKI;
+    protected String date;
+    protected int NKI;
 
     public DiaryEntryModel(int NKI, String date) {
         this.date = date;

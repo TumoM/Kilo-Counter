@@ -9,9 +9,7 @@ import com.example.android.kilocounter.Models.DiaryEntryModel;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-public class diaryBundle extends DiaryEntryModel implements Parcelable {
-    private String date;
-    private int NKI = 0;
+public class DiaryBundle extends DiaryEntryModel implements Parcelable {
     private ArrayList<Integer> foodArr = new ArrayList<>();
     private ArrayList<Integer> exeArr = new ArrayList<>();
     private Integer[] arrayInit = new Integer[]{0,0,0};
@@ -21,14 +19,21 @@ public class diaryBundle extends DiaryEntryModel implements Parcelable {
         return super.compareTo(entry);
     }
 
-    public diaryBundle(int NKI, String date) {
+    public DiaryBundle() {
+        super.date = "";
+        super.NKI = 0;
+        this.foodArr.addAll(Arrays.asList(0,0,0));
+        this.exeArr.addAll(Arrays.asList(0,0,0));
+    }
+
+    public DiaryBundle(int NKI, String date) {
         this.date = date;
         this.NKI = NKI;
         this.foodArr.addAll(Arrays.asList(0,0,0));
         this.exeArr.addAll(Arrays.asList(0,0,0));
     }
 
-    protected diaryBundle(Parcel in) {
+    protected DiaryBundle(Parcel in) {
         this.NKI = in.readInt();
         this.date = in.readString();
         this.foodArr = in.readArrayList(Integer.class.getClassLoader());
@@ -36,18 +41,18 @@ public class diaryBundle extends DiaryEntryModel implements Parcelable {
     }
 
 
-    public void clone(diaryBundle diaryBundle) throws CloneNotSupportedException {
+    public void clone(DiaryBundle diaryBundle) throws CloneNotSupportedException {
         this.NKI = diaryBundle.getNKI();
         this.date = diaryBundle.getDate();
         this.foodArr = diaryBundle.getFoodArr();
         this.exeArr = diaryBundle.getExeArr();
     }
 
-    diaryBundle (diaryBundle diaryBundle) throws CloneNotSupportedException {
+    DiaryBundle(DiaryBundle diaryBundle) throws CloneNotSupportedException {
         this.clone(diaryBundle);
     }
 
-    public diaryBundle(String date, int NKI) {
+    public DiaryBundle(String date, int NKI) {
         this.date = date;
         this.NKI = NKI;
         this.foodArr = new ArrayList<Integer>(3);
@@ -58,22 +63,22 @@ public class diaryBundle extends DiaryEntryModel implements Parcelable {
 
     }
 
-    public diaryBundle(String date, int NKI, ArrayList<Integer> foodArr, ArrayList<Integer> exeArr) {
+    public DiaryBundle(String date, int NKI, ArrayList<Integer> foodArr, ArrayList<Integer> exeArr) {
         this.date = date;
         this.NKI = NKI;
         this.foodArr = foodArr;
         this.exeArr = exeArr;
     }
 
-    public static final Creator<diaryBundle> CREATOR = new Creator<diaryBundle>() {
+    public static final Creator<DiaryBundle> CREATOR = new Creator<DiaryBundle>() {
         @Override
-        public diaryBundle createFromParcel(Parcel in) {
-            return new diaryBundle(in);
+        public DiaryBundle createFromParcel(Parcel in) {
+            return new DiaryBundle(in);
         }
 
         @Override
-        public diaryBundle[] newArray(int size) {
-            return new diaryBundle[size];
+        public DiaryBundle[] newArray(int size) {
+            return new DiaryBundle[size];
         }
     };
 

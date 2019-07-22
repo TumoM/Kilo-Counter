@@ -1,9 +1,9 @@
 package com.example.android.kilocounter.Activities;
 
-import android.app.Activity;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 // import android.app.DialogFragment;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.support.v4.app.DialogFragment;
 import android.content.DialogInterface;
@@ -20,7 +20,9 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.kilocounter.Helpers.DiaryBundle;
 import com.example.android.kilocounter.R;
+import com.google.gson.Gson;
 
 import java.text.DateFormat;
 import java.util.Objects;
@@ -30,7 +32,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     private TextView foodTotalTV ;
     private TextView exerciseTotalTV;
     private TextView netTotalTV;
-    private TextView datePickerTV;
+    private EditText dateTV;
     private EditText breakfastET;
     private EditText runningET;
     private EditText lunchET;
@@ -44,7 +46,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
 
-        EditText dateTV = (EditText) findViewById(R.id.CalcDatePicker);
+        dateTV = (EditText) findViewById(R.id.CalcDatePicker);
         dateTV.setShowSoftInputOnFocus(false);
         breakfastET = (EditText) findViewById(R.id.BreakfastEditText);
         lunchET = (EditText) findViewById(R.id.LunchEditText);
@@ -55,7 +57,6 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         foodTotalTV = (TextView) findViewById(R.id.FoodTotalValue);
         exerciseTotalTV = (TextView) findViewById(R.id.ExerciseTotalValue);
         netTotalTV = (TextView) findViewById(R.id.NetTotalValue);
-
 
         /*
         Text watchers
@@ -75,6 +76,9 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         foodTotalTV.addTextChangedListener(textWatcherConstructorNet(netTotalTV, foodTotalTV, exerciseTotalTV));
 
         exerciseTotalTV.addTextChangedListener(textWatcherConstructorNet(netTotalTV, foodTotalTV, exerciseTotalTV));
+
+        // Load any previous info after the text watchers are set.
+        LoadPreferences();
     }
 
     private TextWatcher textWatcherConstructorNet(final TextView targetName, final TextView otherCat1, final TextView otherCat2) {
@@ -259,20 +263,88 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
      * @param view Gives us context of the calling application.
      */
     public void goBackClick(View view){
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("jsonData", null);
+        editor.remove("jsonData");
+        editor.commit();
         finish();
     }
 
     public void newEntryClick(View view){
         // Todo Check if Date + Values present.
-        if (datePickerTV.getText().length() < 1){
-            Snackbar.make(view, "Check the dates brew.", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
-        else {
-            Snackbar.make(view, "Adding the new entry", Snackbar.LENGTH_LONG)
-                    .setAction("Action", null).show();
-        }
+            assert dateTV !=null;
+            if (dateTV.getText().length() < 1) {
+                Snackbar.make(view, "Check the dates brew.", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+            } else {
+                Snackbar.make(view, "Adding the new entry", Snackbar.LENGTH_LONG)
+                        .setAction("Action", null).show();
+
+                // Todo Add new entry to list
+
+                // Todo Launch DiaryDeets Activity
+            }
     }
+
+    // Todo Finish this. Pull out all EditText text data, including date.
+    private void SavePreferences(){
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        // Todo Put data into the editor.putExtra("state", button.isEnabled());
+        DiaryBundle diaryBundle = new DiaryBundle();
+        diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
+        diaryBundle.setDate(dateTV.getText().toString());
+        if (!breakfastET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(0, Integer.parseInt(breakfastET.getText().toString()));
+        } else {diaryBundle.setFoodArr(0,0);}
+        if (!lunchET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(1, Integer.parseInt(lunchET.getText().toString()));
+        } else {diaryBundle.setFoodArr(1,0);}
+        if (!dinnerET.getText().toString().equals("")) {
+            diaryBundle.setFoodArr(2, Integer.parseInt(dinnerET.getText().toString()));
+        } else {diaryBundle.setFoodArr(2,0);}
+        if (!runningET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(0, Integer.parseInt(runningET.getText().toString()));
+        } else {diaryBundle.setExeArr(0,0);}
+        if (!gymET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(1, Integer.parseInt(gymET.getText().toString()));
+        } else {diaryBundle.setExeArr(1,0);}
+        if (!otherET.getText().toString().equals("")) {
+            diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
+        } else {diaryBundle.setExeArr(2,0);}
+
+        Gson gson = new Gson();
+        String json = gson.toJson(diaryBundle);
+        editor.putString("jsonData", json);
+        editor.commit();   // I missed to save the data to preference here,.
+    }
+
+    private void LoadPreferences(){
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        String jsonData = sharedPreferences.getString("jsonData", null);
+        if (jsonData != null){
+            Gson gson = new Gson();
+            DiaryBundle diaryBundle = gson.fromJson(jsonData, DiaryBundle.class);
+            netTotalTV.setText(String.valueOf(diaryBundle.getNKI()));
+            dateTV.setText(diaryBundle.getDate());
+            breakfastET.setText(diaryBundle.getFoodArr().get(0) > 0 ? String.valueOf(diaryBundle.getFoodArr().get(0)) : "");
+            lunchET.setText(diaryBundle.getFoodArr().get(1) > 0 ? String.valueOf(diaryBundle.getFoodArr().get(1)) : "");
+            dinnerET.setText(diaryBundle.getFoodArr().get(2) > 0 ? String.valueOf(diaryBundle.getFoodArr().get(2)) : "");
+            runningET.setText(diaryBundle.getExeArr().get(0) > 0 ? String.valueOf(diaryBundle.getExeArr().get(0)) : "");
+            gymET.setText(diaryBundle.getExeArr().get(1) > 0 ? String.valueOf(diaryBundle.getExeArr().get(1)) : "");
+            otherET.setText(diaryBundle.getExeArr().get(2) > 0 ? String.valueOf(diaryBundle.getExeArr().get(2)) : "");
+
+        }
+        // button.setEnabled(state);
+    }
+
+    @Override
+    public void onBackPressed() {
+        SavePreferences();
+        super.onBackPressed();
+    }
+
 
     public static class DatePickerFragment extends DialogFragment{
 

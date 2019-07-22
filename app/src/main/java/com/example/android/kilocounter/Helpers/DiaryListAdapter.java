@@ -14,7 +14,7 @@ import com.example.android.kilocounter.R;
 
 import java.util.ArrayList;
 
-public class DiaryListAdapter extends ArrayAdapter<diaryBundle> {
+public class DiaryListAdapter extends ArrayAdapter<DiaryBundle> {
 
     private Context mContext;
     private int mResource;
@@ -26,7 +26,7 @@ public class DiaryListAdapter extends ArrayAdapter<diaryBundle> {
      *                 instantiating views.
      * @param objects  The objects to represent in the ListView.
      */
-    public DiaryListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<diaryBundle> objects) {
+    public DiaryListAdapter(@NonNull Context context, int resource, @NonNull ArrayList<DiaryBundle> objects) {
         super(context, resource, objects);
         this.mContext = context;
         this.mResource = resource;
@@ -59,7 +59,7 @@ public class DiaryListAdapter extends ArrayAdapter<diaryBundle> {
 
     @Nullable
     @Override
-    public diaryBundle getItem(int position) {
+    public DiaryBundle getItem(int position) {
         return super.getItem(position);
     }
 
