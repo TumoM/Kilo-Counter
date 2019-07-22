@@ -41,13 +41,13 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onPostResume() {
         super.onPostResume();
-        String listJSON = sharedPreferences.getString("list", null);
+        String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
         Type feedsType = new TypeToken<ArrayList<Integer>>(){}.getType();
         Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
-        this.diaryEntires = gson.fromJson(listJSON, feedsType);
-        adapter.notifyDataSetChanged();
-
-
+        if (listJSON != null) {
+            this.diaryEntires = gson.fromJson(listJSON, feedsType);
+            adapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -69,7 +69,7 @@ public class MainActivity extends AppCompatActivity {
         DiaryBundle diaryEntryModel6 = new DiaryBundle(500, "2019/05/25");
         DiaryBundle diaryEntryModel7 = new DiaryBundle(0, "2019/05/26");
 
-        if (sharedPreferences.getString("list",null) == null) {
+        if (sharedPreferences.getString("diaryBundleArrayList",null) == null) {
             this.diaryEntires = new ArrayList<>();
             this.diaryEntires.add(diaryEntryModel1);
             this.diaryEntires.add(diaryEntryModel2);
@@ -105,7 +105,7 @@ public class MainActivity extends AppCompatActivity {
 
                 //Todo Pass the information of the clicked entry to the Details screen.
                 intent.putExtra("data", new DiaryBundle(item.getDate(),item.getNKI()));
-                intent.putParcelableArrayListExtra("list", diaryEntires);
+                intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
                 //based on item add info to intent
                 startActivity(intent);
@@ -122,7 +122,7 @@ public class MainActivity extends AppCompatActivity {
                 Intent intent = new Intent(mContext,CalcActivity.class);
 
                 intent.putExtra("movie", "N/A");
-                intent.putParcelableArrayListExtra("list", diaryEntires);
+                intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
                 mContext.startActivity(intent);
             }
         });

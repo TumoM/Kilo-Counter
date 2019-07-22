@@ -53,7 +53,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calc);
 
-        this.diaryEntires = getIntent().getParcelableArrayListExtra("list");
+        this.diaryEntires = getIntent().getParcelableArrayListExtra("diaryBundleArrayList");
 
         dateTV = (EditText) findViewById(R.id.CalcDatePicker);
         dateTV.setShowSoftInputOnFocus(false);
@@ -291,7 +291,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 Snackbar.make(view, "Adding the new entry", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
 
-                // Todo Add new entry to list
+                // Todo Add new entry to diaryBundleArrayList
                 DiaryBundle diaryBundle = new DiaryBundle();
                 diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
                 diaryBundle.setDate(dateTV.getText().toString());
@@ -324,11 +324,11 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 int position = diaryEntires.indexOf(diaryBundle);
                 Intent intent = new Intent(this, DiaryDeets.class);
                 intent.putExtra("data", new DiaryBundle(diaryBundle));
-                intent.putExtra("list", diaryEntires);
+                intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 String listJSON = gson.toJson(diaryEntires);
-                editor.putString("list",listJSON);
+                editor.putString("diaryBundleArrayList",listJSON);
                 editor.commit();
                 this.startActivity(intent);
                 finish();

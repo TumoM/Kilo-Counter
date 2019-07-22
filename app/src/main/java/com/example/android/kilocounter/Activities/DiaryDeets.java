@@ -2,20 +2,25 @@ package com.example.android.kilocounter.Activities;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.android.kilocounter.Helpers.DiaryBundle;
 import com.example.android.kilocounter.R;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.util.ArrayList;
 
 public class DiaryDeets extends AppCompatActivity {
 
-    ArrayList<DiaryBundle> list;
+    ArrayList<DiaryBundle> diaryBundleArrayList;
     DiaryBundle entry;
     int index;
 
@@ -30,7 +35,7 @@ public class DiaryDeets extends AppCompatActivity {
         Bundle data = getIntent().getExtras();
         assert data != null;
         this.entry = (DiaryBundle) data.getParcelable("data");
-        this.list = data.getParcelableArrayList("list");
+        this.diaryBundleArrayList = data.getParcelableArrayList("diaryBundleArrayList");
         this.index = data.getInt("index");
 
         TextView nkiTV = (TextView) findViewById(R.id.nkiTV);
@@ -52,6 +57,7 @@ public class DiaryDeets extends AppCompatActivity {
         gymTV.setText("Gym: " + entry.getExeArr().get(1).toString());
         otherTV.setText("Other: " + entry.getExeArr().get(2).toString());
 
+        LoadPreferences();
     }
 
     public void launchCalcClick(View view){
@@ -63,18 +69,18 @@ public class DiaryDeets extends AppCompatActivity {
 
     public void overviewClick(View view){
         Intent intent = new Intent(this,MainActivity.class);
-        intent.putParcelableArrayListExtra("list",list);
+        intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryBundleArrayList);
         this.startActivity(intent);
         this.finish();
     }
 
     public void nextEntryClick(View view) throws CloneNotSupportedException {
-        if (index < list.size()-1) {
+        if (diaryBundleArrayList != null && index < diaryBundleArrayList.size()-1) {
             Intent intent = new Intent(this,DiaryDeets.class);
             DiaryBundle item = new DiaryBundle("null",1);
-            item.clone(list.get(index+1));
+            item.clone(diaryBundleArrayList.get(index+1));
             intent.putExtra("data", item);
-            intent.putParcelableArrayListExtra("list", list);
+            intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryBundleArrayList);
             intent.putExtra("index", index+1);
             this.startActivity(intent);
         } else {
@@ -88,9 +94,9 @@ public class DiaryDeets extends AppCompatActivity {
         if (index > 0) {
             Intent intent = new Intent(this,DiaryDeets.class);
             DiaryBundle item = new DiaryBundle("null",1);
-            item.clone(list.get(index-1));
+            item.clone(diaryBundleArrayList.get(index-1));
             intent.putExtra("data", item);
-            intent.putParcelableArrayListExtra("list", list);
+            intent.putParcelableArrayListExtra("diaryBundleArrayList", diaryBundleArrayList);
             intent.putExtra("index", (index-1));
             this.startActivity(intent);
         } else {
@@ -98,6 +104,16 @@ public class DiaryDeets extends AppCompatActivity {
                     .setAction("Action", null).show();
         }
 
+    }
+
+    private void LoadPreferences() {
+        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        String listJSON = sharedPreferences.getString("jsonList", null);
+        if (listJSON != null) {
+            Gson gson = new Gson();
+            Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
+            this.diaryBundleArrayList = gson.fromJson(listJSON, feedsType);
+        }
     }
 }
 
