@@ -114,7 +114,7 @@ public class MainActivity extends AppCompatActivity {
                 intent.putExtra("index", position);
                 SharedPreferences.Editor editor = sharedPreferences.edit();
                 String listJSON = gson.toJson(diaryEntires);
-                editor.putString("diaryBundleArrayList",listJSON);
+                // editor.putString("diaryBundleArrayList",listJSON);
                 editor.commit();
                 //based on item add info to intent
                 startActivity(intent);

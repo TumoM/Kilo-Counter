@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
+import android.support.annotation.NonNull;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -18,12 +19,15 @@ import com.google.gson.reflect.TypeToken;
 
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Collections;
 
 public class DiaryDeets extends AppCompatActivity {
 
     ArrayList<DiaryBundle> diaryBundleArrayList;
     DiaryBundle entry;
     int index;
+    Gson gson = new Gson();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -108,6 +112,8 @@ public class DiaryDeets extends AppCompatActivity {
         }
 
     }
+
+
 
     public void prevEntryClick(View view) throws CloneNotSupportedException {
         if (index > 0) {

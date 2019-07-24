@@ -26,7 +26,9 @@ import android.widget.Toast;
 import com.example.android.kilocounter.Helpers.DiaryBundle;
 import com.example.android.kilocounter.R;
 import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
 
+import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -282,7 +284,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     public void newEntryClick(View view) throws CloneNotSupportedException {
-        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         // Todo Check if Date + Values present.
             assert dateTV !=null;
             if (dateTV.getText().length() < 1) {
@@ -309,10 +311,16 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 intent.putExtra("data", diaryBundle);
                 intent.putExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
-                SharedPreferences.Editor editor = sharedPreferences.edit();
-                String listJSON = gson.toJson(diaryEntires);
-                editor.putString("diaryBundleArrayList",listJSON);
-                editor.commit();
+                Runnable runnable = new Runnable() {
+                    @Override
+                    public void run() {
+                        SharedPreferences.Editor editor = sharedPreferences.edit();
+                        String listJSON = gson.toJson(diaryEntires);
+                        editor.putString("diaryBundleArrayList",listJSON);
+                        editor.commit();
+                    }
+                };
+                new Thread(runnable).start();
                 this.startActivity(intent);
                 finish();
 
@@ -354,35 +362,11 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         SharedPreferences.Editor editor = sharedPreferences.edit();
         String suffix = getString(R.string.measure_unit);
         DiaryBundle diaryBundle = getDiaryBundle(suffix);
-        /*// Todo Put data into the editor.putExtra("state", button.isEnabled());
-        DiaryBundle diaryBundle = new DiaryBundle();
-        diaryBundle.setNKI(Integer.parseInt(netTotalTV.getText().toString()));
-        diaryBundle.setDate(dateTV.getText().toString());
-        if (!breakfastET.getText().toString().equals("")) {
-            diaryBundle.setFoodArr(0, Integer.parseInt(breakfastET.getText().toString()));
-        } else {diaryBundle.setFoodArr(0,0);}
-        if (!lunchET.getText().toString().equals("")) {
-            diaryBundle.setFoodArr(1, Integer.parseInt(lunchET.getText().toString()));
-        } else {diaryBundle.setFoodArr(1,0);}
-        if (!dinnerET.getText().toString().equals("")) {
-            diaryBundle.setFoodArr(2, Integer.parseInt(dinnerET.getText().toString()));
-        } else {diaryBundle.setFoodArr(2,0);}
-        if (!runningET.getText().toString().equals("")) {
-            diaryBundle.setExeArr(0, Integer.parseInt(runningET.getText().toString()));
-        } else {diaryBundle.setExeArr(0,0);}
-        if (!gymET.getText().toString().equals("")) {
-            diaryBundle.setExeArr(1, Integer.parseInt(gymET.getText().toString()));
-        } else {diaryBundle.setExeArr(1,0);}
-        if (!otherET.getText().toString().equals("")) {
-            diaryBundle.setExeArr(2, Integer.parseInt(otherET.getText().toString()));
-        } else {diaryBundle.setExeArr(2,0);}
-*/
+
         String json = gson.toJson(diaryBundle);
-        Collections.sort(diaryEntires);
         String listJSON = gson.toJson(diaryEntires);
         editor.putString("jsonData", json);
-        editor.putString("jsonList", listJSON);
-        editor.commit();   // I missed to save the data to preference here,.
+        editor.commit();
     }
 
     @NonNull
