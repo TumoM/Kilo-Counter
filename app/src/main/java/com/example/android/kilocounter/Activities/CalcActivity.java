@@ -416,8 +416,15 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
     @Override
     public void onBackPressed() {
-        SavePreferences();
         super.onBackPressed();
+        Thread thread = new Thread(){
+            public void run(){
+                SavePreferences();
+            }
+        };
+
+        thread.start();
+
     }
 
 

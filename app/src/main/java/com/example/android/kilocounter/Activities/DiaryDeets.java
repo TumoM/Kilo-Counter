@@ -87,6 +87,7 @@ public class DiaryDeets extends AppCompatActivity {
         Intent intent = new Intent(this,MainActivity.class);
         //intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+
         this.startActivity(intent);
         new Thread(new Runnable() {
             public void run() {
