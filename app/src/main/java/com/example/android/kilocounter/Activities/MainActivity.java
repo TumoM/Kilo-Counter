@@ -36,12 +36,23 @@ public class MainActivity extends AppCompatActivity {
     Gson gson = new Gson();
     DiaryListAdapter adapter;
     SharedPreferences sharedPreferences;
+    private int lastActivity;
 
 
     @Override
     protected void onPostResume() {
         super.onPostResume();
+        lastActivity = sharedPreferences.getInt("lastActivity", 0);
+        if (lastActivity == 2) {
+            this.startActivity(new Intent(mContext, CalcActivity.class).putExtra("diaryBundleArrayList", diaryEntires));
+        }
         new fetchRunnable().run();
+    }
+
+    @Override
+    protected void onStart() {
+
+        super.onStart();
     }
 
     @Override
@@ -55,17 +66,20 @@ public class MainActivity extends AppCompatActivity {
 
         ListView listView = (ListView) findViewById(R.id.DiaryListView);
 
-        DiaryBundle diaryEntryModel1 = new DiaryBundle(100, "2019/05/20");
-        DiaryBundle diaryEntryModel2 = new DiaryBundle(-200, "2019/05/21");
-        DiaryBundle diaryEntryModel3 = new DiaryBundle(500, "2019/05/22");
+
+       // DiaryBundle diaryEntryModel1 = new DiaryBundle(100, "2019/05/20");
+       // DiaryBundle diaryEntryModel2 = new DiaryBundle(-200, "2019/05/21");
+        //DiaryBundle diaryEntryModel3 = new DiaryBundle(500, "2019/05/22");
+        /*
         DiaryBundle diaryEntryModel4 = new DiaryBundle(0, "2019/05/23");
         DiaryBundle diaryEntryModel5 = new DiaryBundle(-200, "2019/05/24");
         DiaryBundle diaryEntryModel6 = new DiaryBundle(500, "2019/05/25");
         DiaryBundle diaryEntryModel7 = new DiaryBundle(0, "2019/05/26");
-
+*/
         //if (sharedPreferences.getString("diaryBundleArrayList",null).length()  null) {
 
         //}
+
         String listJSON = sharedPreferences.getString("diaryBundleArrayList", null);
         Type feedsType = new TypeToken<ArrayList<DiaryBundle>>(){}.getType();
         // Toast.makeText(mContext, "Adapter updated", Toast.LENGTH_LONG).show();
@@ -74,13 +88,14 @@ public class MainActivity extends AppCompatActivity {
             this.diaryEntires = gson.fromJson(listJSON, feedsType);
         }else{
             this.diaryEntires = new ArrayList<>();
-            this.diaryEntires.add(diaryEntryModel1);
-            this.diaryEntires.add(diaryEntryModel2);
-            this.diaryEntires.add(diaryEntryModel5);
+            //this.diaryEntires.add(diaryEntryModel1);
+            //this.diaryEntires.add(diaryEntryModel2);
+            //this.diaryEntires.add(diaryEntryModel3);
+
+           /* this.diaryEntires.add(diaryEntryModel5);
             this.diaryEntires.add(diaryEntryModel6);
             this.diaryEntires.add(diaryEntryModel7);
-            this.diaryEntires.add(diaryEntryModel3);
-            this.diaryEntires.add(diaryEntryModel4);
+            this.diaryEntires.add(diaryEntryModel4);*/
         }
 
         Collections.sort(diaryEntires);
@@ -128,7 +143,6 @@ public class MainActivity extends AppCompatActivity {
             public void onClick(View view) {
                 Intent intent = new Intent(mContext,CalcActivity.class);
 
-                intent.putExtra("movie", "N/A");
                 intent.putExtra("diaryBundleArrayList", diaryEntires);
                 mContext.startActivity(intent);
             }

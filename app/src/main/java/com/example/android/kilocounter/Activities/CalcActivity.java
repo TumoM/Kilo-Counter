@@ -2,18 +2,17 @@ package com.example.android.kilocounter.Activities;
 
 import android.app.DatePickerDialog;
 import android.app.Dialog;
-// import android.app.DialogFragment;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.support.annotation.NonNull;
-import android.support.v4.app.DialogFragment;
-import android.content.DialogInterface;
 import android.icu.util.Calendar;
-import android.support.design.widget.Snackbar;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
+import android.support.design.widget.Snackbar;
+import android.support.v4.app.DialogFragment;
+import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.util.Log;
@@ -26,13 +25,13 @@ import android.widget.Toast;
 import com.example.android.kilocounter.Helpers.DiaryBundle;
 import com.example.android.kilocounter.R;
 import com.google.gson.Gson;
-import com.google.gson.reflect.TypeToken;
 
-import java.lang.reflect.Type;
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Objects;
+
+// import android.app.DialogFragment;
 
 public class CalcActivity extends AppCompatActivity implements DatePickerDialog.OnDateSetListener {
 
@@ -49,6 +48,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     ArrayList<DiaryBundle> diaryEntires = new ArrayList<>(3);
     Gson gson = new Gson();
     String suffix;
+    private final String TAG = "CalcActivityDebug";
 
 
 
@@ -275,10 +275,14 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
      * @param view Gives us context of the calling application.
      */
     public void goBackClick(View view){
+        Log.e(TAG,"GoBackClick Fired.");
         SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
         editor.putString("jsonData", null);
-        editor.remove("jsonData");
+        // editor.remove("jsonData");
+        editor.putBoolean("restoreData", false);
+        editor.putBoolean("deleteData", true);
+        editor.putBoolean("backPressed", false);
         editor.commit();
         finish();
     }
@@ -296,8 +300,6 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
                 String suffix = getString(R.string.measure_unit);
                 DiaryBundle diaryBundle = getDiaryBundle(suffix);
-                // Todo Add new entry to diaryBundleArrayList
-
                 if (this.diaryEntires != null) {
                     this.diaryEntires.add(diaryBundle);
                 }
@@ -311,22 +313,23 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                 intent.putExtra("data", diaryBundle);
                 intent.putExtra("diaryBundleArrayList", diaryEntires);
                 intent.putExtra("index", position);
+
+                // Saves the entry in the background.
                 Runnable runnable = new Runnable() {
                     @Override
                     public void run() {
                         SharedPreferences.Editor editor = sharedPreferences.edit();
                         String listJSON = gson.toJson(diaryEntires);
                         editor.putString("diaryBundleArrayList",listJSON);
+                        editor.putBoolean("restoreData", false);
+                        editor.putBoolean("deleteData", true);
+                        editor.putBoolean("backPressed", false);
                         editor.commit();
                     }
                 };
                 new Thread(runnable).start();
                 this.startActivity(intent);
                 finish();
-
-
-
-                // Todo Launch DiaryDeets Activity
             }
     }
 
@@ -366,6 +369,8 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         String json = gson.toJson(diaryBundle);
         String listJSON = gson.toJson(diaryEntires);
         editor.putString("jsonData", json);
+        editor.putBoolean("restoreData", true);
+        editor.putBoolean("delteData", false);
         editor.commit();
     }
 
@@ -396,9 +401,13 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     }
 
     private void LoadPreferences(){
+        Log.e(TAG,"Loading Data.");
         SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
-        String jsonData = sharedPreferences.getString("jsonData", null);
-        if (jsonData != null){
+        String jsonData = sharedPreferences.getString("jsonData", "null");
+        boolean restore = sharedPreferences.getBoolean("restoreData", false);
+        sharedPreferences.edit().putBoolean("backPressed", false).commit();
+        if (restore){
+            Log.e(TAG,"Previous Data found.");
             Gson gson = new Gson();
             DiaryBundle diaryBundle = gson.fromJson(jsonData, DiaryBundle.class);
             netTotalTV.setText(String.valueOf(diaryBundle.getNKI()));
@@ -409,14 +418,19 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
             runningET.setText(diaryBundle.getExeArr().get(0) > 0 ? String.valueOf(diaryBundle.getExeArr().get(0)) : "");
             gymET.setText(diaryBundle.getExeArr().get(1) > 0 ? String.valueOf(diaryBundle.getExeArr().get(1)) : "");
             otherET.setText(diaryBundle.getExeArr().get(2) > 0 ? String.valueOf(diaryBundle.getExeArr().get(2)) : "");
-
+        }else{
+            Log.e(TAG,"No old data to load.");
         }
         // button.setEnabled(state);
     }
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putBoolean("backPressed", true);
+        editor.putInt("lastActivity", 0);
+        editor.commit();
         Thread thread = new Thread(){
             public void run(){
                 SavePreferences();
@@ -424,9 +438,80 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         };
 
         thread.start();
+        super.onBackPressed();
 
     }
 
+    @Override
+    protected void onPause() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
+        // SharedPreferences.Editor editor = sharedPreferences.edit();
+        // editor.putBoolean("backPressed", true);
+        // editor.commit();
+        if (!sharedPreferences.getBoolean("deleteData",false)) {
+            Thread thread = new Thread() {
+                public void run() {
+                    SavePreferences();
+                }
+
+            };
+
+            thread.start();
+        }
+        super.onPause();
+    }
+
+    @Override
+    protected void onStart() {
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
+        sharedPreferences.edit().putBoolean("deleteData", false).commit();
+        super.onStart();
+    }
+
+    @Override
+    protected void onStop() {
+        Log.e(TAG, "onStop Called");
+        SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
+        String jsonData = sharedPreferences.getString("jsonData", null);
+        boolean deleteDataPress = sharedPreferences.getBoolean("deleteData", false);
+        boolean restoreData = sharedPreferences.getBoolean("restoreData", false);
+        boolean backPressed = sharedPreferences.getBoolean("backPressed",false);
+
+        if (jsonData != null && !deleteDataPress) {
+            Thread thread = new Thread(){
+                public void run(){
+                    SavePreferences();
+                }
+            };
+
+            thread.start();
+        }
+        if (deleteDataPress){
+            sharedPreferences.edit().putInt("lastActivity", 0).commit();
+        }else {
+            sharedPreferences.edit().putInt("lastActivity",2).commit();
+        }
+        if (backPressed){
+
+        }
+        super.onStop();
+
+    }
+
+    @Override
+    protected void onRestart() {
+        Log.e(TAG, "onRestart Called");
+        LoadPreferences();
+        super.onRestart();
+
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        Log.e(TAG, "onDestroy: onDestry() Called");
+        super.onDestroy();
+    }
 
     public static class DatePickerFragment extends DialogFragment{
 
