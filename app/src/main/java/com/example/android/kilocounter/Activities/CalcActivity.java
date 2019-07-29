@@ -1,5 +1,6 @@
 package com.example.android.kilocounter.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.support.design.widget.Snackbar;
 import android.support.v4.app.DialogFragment;
 import android.support.v7.app.AppCompatActivity;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.util.Log;
 import android.view.View;
@@ -27,8 +29,12 @@ import com.example.android.kilocounter.R;
 import com.google.gson.Gson;
 
 import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Date;
+import java.util.Locale;
 import java.util.Objects;
 
 // import android.app.DialogFragment;
@@ -92,6 +98,16 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
         // Load any previous info after the text watchers are set.
         LoadPreferences();
+
+        dateTV.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if (hasFocus){
+                    dateTV.callOnClick();
+                    dateTV.setInputType(InputType.TYPE_NULL);
+                }
+            }
+        });
     }
 
     private TextWatcher textWatcherConstructorNet(final TextView targetName, final TextView otherCat1, final TextView otherCat2) {
@@ -251,6 +267,9 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
      */
     public void showDatePickerDialog(View v) {
         DialogFragment newFragment = new DatePickerFragment();
+        Bundle bundle = new Bundle();
+        bundle.putString("Date", dateTV.getText().toString());
+        newFragment.setArguments(bundle);
         newFragment.show(getSupportFragmentManager(), "datePicker");
     }
 
@@ -283,7 +302,9 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         editor.putBoolean("restoreData", false);
         editor.putBoolean("deleteData", true);
         editor.putBoolean("backPressed", false);
+        sharedPreferences.edit().putInt("lastActivity", 0).commit();
         editor.commit();
+        this.startActivity(new Intent(this, MainActivity.class).putExtra("diaryBundleArrayList", diaryEntires));
         finish();
     }
 
@@ -294,6 +315,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
             if (dateTV.getText().length() < 1) {
                 Snackbar.make(view, "Check the dates brew.", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
+                dateTV.callOnClick();
             } else {
                 Snackbar.make(view, "Adding the new entry", Snackbar.LENGTH_LONG)
                         .setAction("Action", null).show();
@@ -324,6 +346,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
                         editor.putBoolean("restoreData", false);
                         editor.putBoolean("deleteData", true);
                         editor.putBoolean("backPressed", false);
+                        sharedPreferences.edit().putInt("lastActivity", 0).commit();
                         editor.commit();
                     }
                 };
@@ -370,7 +393,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         String listJSON = gson.toJson(diaryEntires);
         editor.putString("jsonData", json);
         editor.putBoolean("restoreData", true);
-        editor.putBoolean("delteData", false);
+        editor.putBoolean("deleteData", false);
         editor.commit();
     }
 
@@ -448,7 +471,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         // SharedPreferences.Editor editor = sharedPreferences.edit();
         // editor.putBoolean("backPressed", true);
         // editor.commit();
-        if (!sharedPreferences.getBoolean("deleteData",false)) {
+        if (sharedPreferences.getBoolean("restoreData",false)) {
             Thread thread = new Thread() {
                 public void run() {
                     SavePreferences();
@@ -465,6 +488,8 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
     protected void onStart() {
         SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         sharedPreferences.edit().putBoolean("deleteData", false).commit();
+        sharedPreferences.edit().putBoolean("restoreData", true);
+        sharedPreferences.edit().putInt("lastActivity",2).commit();
         super.onStart();
     }
 
@@ -477,7 +502,7 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
         boolean restoreData = sharedPreferences.getBoolean("restoreData", false);
         boolean backPressed = sharedPreferences.getBoolean("backPressed",false);
 
-        if (jsonData != null && !deleteDataPress) {
+        if (jsonData != null && restoreData) {
             Thread thread = new Thread(){
                 public void run(){
                     SavePreferences();
@@ -485,14 +510,6 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
             };
 
             thread.start();
-        }
-        if (deleteDataPress){
-            sharedPreferences.edit().putInt("lastActivity", 0).commit();
-        }else {
-            sharedPreferences.edit().putInt("lastActivity",2).commit();
-        }
-        if (backPressed){
-
         }
         super.onStop();
 
@@ -517,13 +534,35 @@ public class CalcActivity extends AppCompatActivity implements DatePickerDialog.
 
         String TAG = "SWAG";
 
+        public DatePickerFragment(){
+
+        }
+/*
+        public DatePickerFragment(String string) throws ParseException {
+            final Calendar c = Calendar.getInstance();
+            DateFormat format = new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault());
+            Date date = format.parse(string);
+            c.setTime(date);
+
+
+        }
+*/
+
         @Override
         public Dialog onCreateDialog(Bundle savedInstanceState) {
             // Use the current date as the default date in the picker
+            String dateString = this.getArguments().getString("Date");
             final Calendar c = Calendar.getInstance();
+            try {
+                Date date = (new SimpleDateFormat("dd MMMM yyyy", Locale.getDefault()).parse(dateString));
+                c.setTime(date);
+            } catch (ParseException e) {
+
+            }
             int year = c.get(Calendar.YEAR);
             int month = c.get(Calendar.MONTH);
             int day = c.get(Calendar.DAY_OF_MONTH);
+
 
             // Create a new instance of DatePickerDialog and return it
             return new DatePickerDialog(Objects.requireNonNull(getActivity()), (DatePickerDialog.OnDateSetListener) getActivity(), year, month, day);

@@ -264,7 +264,6 @@
         android:clickable="false"
         android:contextClickable="false"
         android:ems="10"
-        android:focusableInTouchMode="false"
         android:focusedByDefault="false"
         android:hint="@string/datePickHint"
         android:inputType="date"

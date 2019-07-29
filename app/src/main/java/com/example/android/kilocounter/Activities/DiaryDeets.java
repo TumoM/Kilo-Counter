@@ -77,9 +77,21 @@ public class DiaryDeets extends AppCompatActivity {
     }
 
     public void launchCalcClick(View view){
+        final SharedPreferences sharedPreferences = this.getSharedPreferences("preferenceFile",Context.MODE_PRIVATE);
         Intent intent = new Intent(this,CalcActivity.class);
 
-        intent.putExtra("movie", "N/A");
+        Runnable runnable = new Runnable() {
+            @Override
+            public void run() {
+                SharedPreferences.Editor editor = sharedPreferences.edit();
+                String listJSON = gson.toJson(diaryBundleArrayList);
+                editor.putString("diaryBundleArrayList",listJSON);
+                editor.commit();
+            }
+        };
+
+        intent.putExtra("diaryBundleArrayList", diaryBundleArrayList);
+        new Thread(runnable).start();
         this.startActivity(intent);
     }
 
